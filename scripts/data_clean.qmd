@@ -9,9 +9,7 @@ editor: visual
 Import dataset and some packages
 
 ```{r}
-library(tidyverse)
-```
-
-```{r}
-head(gss_cat)
+library(readr)
+View(AlternateRuns)
+AlternateRuns <- read_csv("AlternateRuns.csv")
 ```
