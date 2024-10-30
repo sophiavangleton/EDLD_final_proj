@@ -4,12 +4,129 @@ format: html
 editor: visual
 ---
 
-## Final Project: AlternateRuns Dataset
+# Final Project: Alternate Runs Data-set
 
-Import dataset and some packages
+**Experimental design:**  Switching every 4 trials in an alternating runs manner (no cues). Total of 8 experimental blocks were intended, but 60 subjects saw only 7 blocks. Across these blocks counterbalancing of four conditions: Both tasks unambiguous (1), both tasks ambiguous (4), shape ambiguous when irrelevant, color always ambiguous (2), shape always ambiguous, color unambiguous when irrelevant (2),
+
+## Import data-set and some packages
 
 ```{r}
+#open neccessary packages here
+library(tidyverse)
+library(janitor)
 library(readr)
-View(AlternateRuns)
+library(rio)
+library(psych) #generate metrix w scatterplot and cor
+
+#import dataset
 AlternateRuns <- read_csv("AlternateRuns.csv")
+view(AlternateRuns)
+
+#remove irrelevant columns 
+AlternateRuns <- AlternateRuns %>% 
+  select(-y, -x, -c2)
+```
+
+```{r}
+#rename columns to understand better
+alt_run <- AlternateRuns %>% 
+  rename(dimshape = dim1, dimcolor = dim2, RT = time, correct = cor, response = res)
+alt_run
+
+```
+
+```{r}
+# replace numeric values w character strings for task and error
+alt_run_1 <- alt_run %>% mutate(task = recode(task, `1` = "shape", `2` = 'color')) %>% 
+  mutate(error = recode(error, `0` = "no", `1` = 'yes'))
+alt_run_1
+```
+
+### **What the variables mean:**
+
+-   block: 0 for practice, 7-8 blocks (112 trials)
+
+-   bal: counterbalancing of conditions across blocks
+
+-   x, y, c2: irrelevant (already taken out)
+
+-   cycle: counting within full alternating cycle (8), switch at 1 and 5
+
+-   task: 1=shape, 2=color
+
+-   dimshape=specific shapes--4=neutral
+
+-   dimcolor=specific color--4=neutral
+
+-   correct: correct response (i.e., value of the currently relevant task dimension)
+
+-   error: 0 = no error, 1 = yes error
+
+-   response: actual response
+
+-   RT: or response time
+
+```         
+## Remove Practice Trials in Block Variable + pivot func
+```
+
+```{r}
+#removing practice trials from our df
+alt_run <- alt_run %>% 
+  filter(block != 0) %>% 
+  print()
+
+#use pivot long and/or? wide here with some key variables we want to look at. may need to alter df to turn some 1s and 0s in columns to be names... (correct, incorrect or color, shape). fix code below...
+
+# alt_run %>% 
+#   pivot_wider(names_from = task, values_from = block)
+```
+
+## Descriptive Graphs
+
+### Histogram of RT
+
+```{r}
+mean_rt <- mean(alt_run$RT, na.rm = TRUE)
+sd_rt <-  sd(alt_run$RT, na.rm = TRUE)
+
+alt_run %>% arrange(desc(RT)) #there are quite a few RTs that get up to 10000 ms for one trial... determine outliers
+
+alt_run %>% 
+  ggplot(aes(x=RT)) +
+  geom_histogram(aes(y = after_stat(density)), fill = 'darkgray', color = 'darkblue') +
+  geom_vline(aes(xintercept = mean_rt) , color = 'red', linetype = 'dashed', size = 1.5) +
+    theme_minimal() +
+  stat_function(fun = dnorm, args = list(mean = mean_rt, sd = sd_rt) ,  col = 'darkred', size = 1.5) +
+    labs(x= 'Response Times (ms)', y= 'Density', title = 'Histogram of Response Times', subtitle = 'The mean and normal density curve of RTs') 
+```
+
+### Boxplot of RT
+
+```{r}
+#boxplot of all RTs regardless of task
+boxplot(alt_run_1$RT)
+
+#boxplot of RTs when doing shape task
+boxplot_s <- filter(alt_run_1, task == 'shape')
+boxplot(boxplot_s$RT)
+
+#boxplot of RTs when doing color task
+boxplot_c <- filter(alt_run_1, task == 'color')
+boxplot(boxplot_c$RT)
+```
+
+### Correlations
+
+```{r}
+cor_alt <- alt_run %>% 
+  select(RT, cycle, task)
+  cor(cor_alt, use = "complete.obs")
+```
+
+```{r}
+#is there a correlation between response times and error rate? also note: used the psych package to generate this
+  alt_run %>% 
+    select(RT, error) %>%
+    pairs.panels(lm = TRUE)
 ```

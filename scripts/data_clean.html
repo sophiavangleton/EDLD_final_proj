@@ -96,11 +96,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<section id="final-project-alternateruns-dataset" class="level2">
-<h2 class="anchored" data-anchor-id="final-project-alternateruns-dataset">Final Project: AlternateRuns Dataset</h2>
-<p>Import dataset and some packages</p>
+<section id="final-project-alternate-runs-data-set" class="level1">
+<h1>Final Project: Alternate Runs Data-set</h1>
+<p><strong>Experimental design:</strong> &nbsp;Switching every 4 trials in an alternating runs manner (no cues). Total of 8 experimental blocks were intended, but 60 subjects saw only 7 blocks. Across these blocks counterbalancing of four conditions: Both tasks unambiguous (1), both tasks ambiguous (4), shape ambiguous when irrelevant, color always ambiguous (2), shape always ambiguous, color unambiguous when irrelevant (2),</p>
+<section id="import-data-set-and-some-packages" class="level2">
+<h2 class="anchored" data-anchor-id="import-data-set-and-some-packages">Import data-set and some packages</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">#open neccessary packages here</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
 ✔ dplyr     1.1.4     ✔ readr     2.1.5
@@ -113,21 +116,245 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 ✖ dplyr::lag()    masks stats::lag()
 ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</code></pre>
 </div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(janitor)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'janitor'
+
+The following objects are masked from 'package:stats':
+
+    chisq.test, fisher.test</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readr)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rio)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(psych) <span class="co">#generate metrix w scatterplot and cor</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'psych'
+
+The following objects are masked from 'package:ggplot2':
+
+    %+%, alpha</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co">#import dataset</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>AlternateRuns <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"AlternateRuns.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Rows: 94754 Columns: 16
+── Column specification ────────────────────────────────────────────────────────
+Delimiter: ","
+dbl (16): id, bal, block, x, cond, trial, y, c2, cycle, task, dim1, dim2, co...
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">view</span>(AlternateRuns)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="co">#remove irrelevant columns </span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>AlternateRuns <span class="ot">&lt;-</span> AlternateRuns <span class="sc">%&gt;%</span> </span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>y, <span class="sc">-</span>x, <span class="sc">-</span>c2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(gss_cat)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co">#rename columns to understand better</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>alt_run <span class="ot">&lt;-</span> AlternateRuns <span class="sc">%&gt;%</span> </span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">dimshape =</span> dim1, <span class="at">dimcolor =</span> dim2, <span class="at">RT =</span> time, <span class="at">correct =</span> cor, <span class="at">response =</span> res)</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>alt_run</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 6 × 9
-   year marital         age race  rincome        partyid     relig denom tvhours
-  &lt;int&gt; &lt;fct&gt;         &lt;int&gt; &lt;fct&gt; &lt;fct&gt;          &lt;fct&gt;       &lt;fct&gt; &lt;fct&gt;   &lt;int&gt;
-1  2000 Never married    26 White $8000 to 9999  Ind,near r… Prot… Sout…      12
-2  2000 Divorced         48 White $8000 to 9999  Not str re… Prot… Bapt…      NA
-3  2000 Widowed          67 White Not applicable Independent Prot… No d…       2
-4  2000 Never married    39 White Not applicable Ind,near r… Orth… Not …       4
-5  2000 Divorced         25 White Not applicable Not str de… None  Not …       1
-6  2000 Married          25 White $20000 - 24999 Strong dem… Prot… Sout…      NA</code></pre>
+<pre><code># A tibble: 94,754 × 13
+      id   bal block  cond trial cycle  task dimshape dimcolor correct error
+   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;
+ 1     1     1     0     1     1     1     1        1        4       1     0
+ 2     1     1     0     1     2     2     1        2        4       2     0
+ 3     1     1     0     1     3     3     1        1        4       1     0
+ 4     1     1     0     1     4     4     1        2        4       2     0
+ 5     1     1     0     1     5     5     2        4        1       1     0
+ 6     1     1     0     1     6     6     2        4        2       2     0
+ 7     1     1     0     1     7     7     2        4        3       3     0
+ 8     1     1     0     1     8     8     2        4        2       2     0
+ 9     1     1     0     1     9     1     1        1        4       1     0
+10     1     1     0     1    10     2     1        3        4       3     0
+# ℹ 94,744 more rows
+# ℹ 2 more variables: response &lt;dbl&gt;, RT &lt;dbl&gt;</code></pre>
 </div>
 </div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># replace numeric values w character strings for task and error</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>alt_run_1 <span class="ot">&lt;-</span> alt_run <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">task =</span> <span class="fu">recode</span>(task, <span class="st">`</span><span class="at">1</span><span class="st">`</span> <span class="ot">=</span> <span class="st">"shape"</span>, <span class="st">`</span><span class="at">2</span><span class="st">`</span> <span class="ot">=</span> <span class="st">'color'</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">error =</span> <span class="fu">recode</span>(error, <span class="st">`</span><span class="at">0</span><span class="st">`</span> <span class="ot">=</span> <span class="st">"no"</span>, <span class="st">`</span><span class="at">1</span><span class="st">`</span> <span class="ot">=</span> <span class="st">'yes'</span>))</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>alt_run_1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 94,754 × 13
+      id   bal block  cond trial cycle task  dimshape dimcolor correct error
+   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;    &lt;dbl&gt;    &lt;dbl&gt;   &lt;dbl&gt; &lt;chr&gt;
+ 1     1     1     0     1     1     1 shape        1        4       1 no   
+ 2     1     1     0     1     2     2 shape        2        4       2 no   
+ 3     1     1     0     1     3     3 shape        1        4       1 no   
+ 4     1     1     0     1     4     4 shape        2        4       2 no   
+ 5     1     1     0     1     5     5 color        4        1       1 no   
+ 6     1     1     0     1     6     6 color        4        2       2 no   
+ 7     1     1     0     1     7     7 color        4        3       3 no   
+ 8     1     1     0     1     8     8 color        4        2       2 no   
+ 9     1     1     0     1     9     1 shape        1        4       1 no   
+10     1     1     0     1    10     2 shape        3        4       3 no   
+# ℹ 94,744 more rows
+# ℹ 2 more variables: response &lt;dbl&gt;, RT &lt;dbl&gt;</code></pre>
+</div>
+</div>
+<section id="what-the-variables-mean" class="level3">
+<h3 class="anchored" data-anchor-id="what-the-variables-mean"><strong>What the variables mean:</strong></h3>
+<ul>
+<li><p>block: 0 for practice, 7-8 blocks (112 trials)</p></li>
+<li><p>bal: counterbalancing of conditions across blocks</p></li>
+<li><p>x, y, c2: irrelevant (already taken out)</p></li>
+<li><p>cycle: counting within full alternating cycle (8), switch at 1 and 5</p></li>
+<li><p>task: 1=shape, 2=color</p></li>
+<li><p>dimshape=specific shapes–4=neutral</p></li>
+<li><p>dimcolor=specific color–4=neutral</p></li>
+<li><p>correct: correct response (i.e., value of the currently relevant task dimension)</p></li>
+<li><p>error: 0 = no error, 1 = yes error</p></li>
+<li><p>response: actual response</p></li>
+<li><p>RT: or response time</p></li>
+</ul>
+<pre><code>## Remove Practice Trials in Block Variable + pivot func</code></pre>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co">#removing practice trials from our df</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>alt_run <span class="ot">&lt;-</span> alt_run <span class="sc">%&gt;%</span> </span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(block <span class="sc">!=</span> <span class="dv">0</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 83,440 × 13
+      id   bal block  cond trial cycle  task dimshape dimcolor correct error
+   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;
+ 1     1     1     1     1     1     1     1        3        4       3     0
+ 2     1     1     1     1     2     2     1        3        4       3     0
+ 3     1     1     1     1     3     3     1        1        4       1     0
+ 4     1     1     1     1     4     4     1        2        4       2     0
+ 5     1     1     1     1     5     5     2        4        1       1     1
+ 6     1     1     1     1     6     6     2        4        1       1     0
+ 7     1     1     1     1     7     7     2        4        3       3     0
+ 8     1     1     1     1     8     8     2        4        1       1     0
+ 9     1     1     1     1     9     1     1        1        4       1     0
+10     1     1     1     1    10     2     1        3        4       3     0
+# ℹ 83,430 more rows
+# ℹ 2 more variables: response &lt;dbl&gt;, RT &lt;dbl&gt;</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co">#use pivot long and/or? wide here with some key variables we want to look at. may need to alter df to turn some 1s and 0s in columns to be names... (correct, incorrect or color, shape). fix code below...</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="co"># alt_run %&gt;% </span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="co">#   pivot_wider(names_from = task, values_from = block)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+<section id="descriptive-graphs" class="level2">
+<h2 class="anchored" data-anchor-id="descriptive-graphs">Descriptive Graphs</h2>
+<section id="histogram-of-rt" class="level3">
+<h3 class="anchored" data-anchor-id="histogram-of-rt">Histogram of RT</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>mean_rt <span class="ot">&lt;-</span> <span class="fu">mean</span>(alt_run<span class="sc">$</span>RT, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>sd_rt <span class="ot">&lt;-</span>  <span class="fu">sd</span>(alt_run<span class="sc">$</span>RT, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>alt_run <span class="sc">%&gt;%</span> <span class="fu">arrange</span>(<span class="fu">desc</span>(RT)) <span class="co">#there are quite a few RTs that get up to 10000 ms for one trial... determine outliers</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 83,440 × 13
+      id   bal block  cond trial cycle  task dimshape dimcolor correct error
+   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;
+ 1     3     1     4     4    78     6     2        3        2       2     1
+ 2    17     1     4     4     9     1     1        1        2       1     1
+ 3    26     2     1     4     1     1     1        3        3       3     1
+ 4    41     1     1     1    81     1     1        3        4       3     1
+ 5    41     1     4     4   101     5     2        2        2       2     1
+ 6    48     2     7     3    73     1     1        1        4       1     0
+ 7    54     2     1     4    11     3     1        1        3       1     1
+ 8    54     2     1     4    48     8     2        2        3       3     1
+ 9    54     2     6     2     1     1     1        2        1       2     1
+10    56     2     3     2    17     1     1        1        3       1     1
+# ℹ 83,430 more rows
+# ℹ 2 more variables: response &lt;dbl&gt;, RT &lt;dbl&gt;</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>alt_run <span class="sc">%&gt;%</span> </span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>RT)) <span class="sc">+</span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="fu">aes</span>(<span class="at">y =</span> <span class="fu">after_stat</span>(density)), <span class="at">fill =</span> <span class="st">'darkgray'</span>, <span class="at">color =</span> <span class="st">'darkblue'</span>) <span class="sc">+</span></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="fu">aes</span>(<span class="at">xintercept =</span> mean_rt) , <span class="at">color =</span> <span class="st">'red'</span>, <span class="at">linetype =</span> <span class="st">'dashed'</span>, <span class="at">size =</span> <span class="fl">1.5</span>) <span class="sc">+</span></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_function</span>(<span class="at">fun =</span> dnorm, <span class="at">args =</span> <span class="fu">list</span>(<span class="at">mean =</span> mean_rt, <span class="at">sd =</span> sd_rt) ,  <span class="at">col =</span> <span class="st">'darkred'</span>, <span class="at">size =</span> <span class="fl">1.5</span>) <span class="sc">+</span></span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">x=</span> <span class="st">'Response Times (ms)'</span>, <span class="at">y=</span> <span class="st">'Density'</span>, <span class="at">title =</span> <span class="st">'Histogram of Response Times'</span>, <span class="at">subtitle =</span> <span class="st">'The mean and normal density curve of RTs'</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Using `size` aesthetic for lines was deprecated in ggplot2 3.4.0.
+ℹ Please use `linewidth` instead.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="data_clean_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="boxplot-of-rt" class="level3">
+<h3 class="anchored" data-anchor-id="boxplot-of-rt">Boxplot of RT</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co">#boxplot of all RTs regardless of task</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(alt_run_1<span class="sc">$</span>RT)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="data_clean_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co">#boxplot of RTs when doing shape task</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>boxplot_s <span class="ot">&lt;-</span> <span class="fu">filter</span>(alt_run_1, task <span class="sc">==</span> <span class="st">'shape'</span>)</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(boxplot_s<span class="sc">$</span>RT)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="data_clean_files/figure-html/unnamed-chunk-6-2.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co">#boxplot of RTs when doing color task</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>boxplot_c <span class="ot">&lt;-</span> <span class="fu">filter</span>(alt_run_1, task <span class="sc">==</span> <span class="st">'color'</span>)</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(boxplot_c<span class="sc">$</span>RT)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="data_clean_files/figure-html/unnamed-chunk-6-3.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="correlations" class="level3">
+<h3 class="anchored" data-anchor-id="correlations">Correlations</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>cor_alt <span class="ot">&lt;-</span> alt_run <span class="sc">%&gt;%</span> </span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(RT, cycle, task)</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cor</span>(cor_alt, <span class="at">use =</span> <span class="st">"complete.obs"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>               RT      cycle        task
+RT     1.00000000 -0.1618331 -0.05092773
+cycle -0.16183306  1.0000000  0.87287156
+task  -0.05092773  0.8728716  1.00000000</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co">#is there a correlation between response times and error rate? also note: used the psych package to generate this</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>  alt_run <span class="sc">%&gt;%</span> </span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">select</span>(RT, error) <span class="sc">%&gt;%</span></span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">pairs.panels</span>(<span class="at">lm =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="data_clean_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
 </section>
 
 </main>
