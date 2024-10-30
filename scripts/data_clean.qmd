@@ -9,7 +9,12 @@ editor: visual
 Import dataset and some packages
 
 ```{r}
+#open neccessary packages here
+library(tidyverse)
+library(janitor)
 library(readr)
-View(AlternateRuns)
+
+#import dataset
 AlternateRuns <- read_csv("AlternateRuns.csv")
+view(AlternateRuns)
 ```
