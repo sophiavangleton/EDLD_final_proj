@@ -17,14 +17,9 @@ library(janitor)
 library(readr)
 library(rio)
 library(psych) #generate metrix w scatterplot and cor
-
 #import dataset
 AlternateRuns <- read_csv("AlternateRuns.csv")
 view(AlternateRuns)
-
-#remove irrelevant columns 
-AlternateRuns <- AlternateRuns %>% 
-  select(-y, -x, -c2)
 ```
 
 ```{r}
