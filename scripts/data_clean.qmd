@@ -6,40 +6,11 @@ editor: visual
 
 # Final Project: Alternate Runs Data-set
 
-**Experimental design:**  Switching every 4 trials in an alternating runs manner (no cues). Total of 8 experimental blocks were intended, but 60 subjects saw only 7 blocks. Across these blocks counterbalancing of four conditions: Both tasks unambiguous (1), both tasks ambiguous (4), shape ambiguous when irrelevant, color always ambiguous (2), shape always ambiguous, color unambiguous when irrelevant (2),
-
-## Import data-set and some packages
-
-```{r}
-#open neccessary packages here
-library(tidyverse)
-library(janitor)
-library(readr)
-library(rio)
-library(psych) #generate metrix w scatterplot and cor
-#import dataset
-AlternateRuns <- read_csv("AlternateRuns.csv")
-view(AlternateRuns)
-```
-
-```{r}
-#rename columns to understand better
-alt_run <- AlternateRuns %>% 
-  rename(dimshape = dim1, dimcolor = dim2, RT = time, correct = cor, response = res)
-alt_run
-
-```
-
-```{r}
-# replace numeric values w character strings for task and error
-alt_run_1 <- alt_run %>% mutate(task = recode(task, `1` = "shape", `2` = 'color')) %>% 
-  mutate(error = recode(error, `0` = "no", `1` = 'yes'))
-alt_run_1
-```
+**Experimental design:**  Switching every 4 trials in an alternating runs manner (no cues). Total of 8 experimental blocks were intended, but 60 subjects saw only 7 blocks. Across these blocks counterbalancing of four conditions: Both tasks unambiguous (1), both tasks ambiguous (4), shape ambiguous when irrelevant, color always ambiguous (2), shape always ambiguous, color unambiguous when irrelevant (2)
 
 ### **What the variables mean:**
 
--   block: 0 for practice, 7-8 blocks (112 trials)
+-   block: 0 for practice, there are a total of 8 blocks per part and each block consists of 112 trials. So 896 trials per participant over all 7 blocks (not counting practice)
 
 -   bal: counterbalancing of conditions across blocks
 
@@ -61,9 +32,42 @@ alt_run_1
 
 -   RT: or response time
 
-```         
-## Remove Practice Trials in Block Variable + pivot func
+### Import data-set and some packages
+
+```{r}
+#open neccesary packages here
+library(tidyverse)
+library(janitor)
+library(readr)
+library(rio)
+library(psych) #generate metrix w scatterplot and cor
+#import dataset
+AlternateRuns <- read_csv("AlternateRuns.csv")
+view(AlternateRuns)
 ```
+
+## Clean-Data
+
+### Rename Columns to Understand Better
+
+```{r}
+#rename columns to understand better
+alt_run <- AlternateRuns %>% 
+  rename(dimshape = dim1, dimcolor = dim2, RT = time, correct = cor, response = res)
+alt_run
+
+```
+
+### Replace Numeric Values w Character Strings for Task and Error
+
+```{r}
+# replace numeric values w character strings for task and error
+alt_run_1 <- alt_run %>% mutate(task = recode(task, `1` = "shape", `2` = 'color')) %>% 
+  mutate(error = recode(error, `0` = "no", `1` = 'yes'))
+alt_run_1
+```
+
+### Remove Practice Trials in Block Variable + pivot func
 
 ```{r}
 #removing practice trials from our df
@@ -77,15 +81,88 @@ alt_run <- alt_run %>%
 #   pivot_wider(names_from = task, values_from = block)
 ```
 
+### Determine and Remove Outliers (RT way...)
+
+```{r}
+
+
+alt_run %>% 
+  arrange(desc(RT))
+#there are quite a few RTs that get up to 10000 ms for one trial... determine outliers
+
+#need to group by participant to get overall mean and sd for reaction time to determine which subjects to omit from the dataset. Thinking that 3 SDs above or below the mean is a  good criterion for outliers. 
+
+#WHAT TO DO: zscore on each seq postiion x switch x abiguity on RT then zscore on each block (to account for some participants only doing 7 instaead of 8 blocks) 
+
+#cycles of 4 mutate to make a new group for easier cycle analysis
+
+#mean_rt_per <- alt_run %>% 
+ # group_by(id) %>% 
+ # summarize(mean(RT, na.rm = TRUE)) %>% 
+ # print()
+
+#sd_rt_per <- alt_run %>% 
+ # group_by(id) %>% 
+ # summarize(sd(RT, na.rm = TRUE)) %>% 
+#  print()
+
+#z_scores <- (alt_run$RT - mean_rt_per)/sd_rt_per
+
+#alt_run_r <- alt_run %>%
+ # group_by(id) %>% 
+  #mutate(z_scores = z_scores) %>% 
+  #select(z_scores, RT, id) %>% 
+ # print()
+
+
+#alt_run %>% 
+ # group_by(z_scores, id) %>% 
+ # print()
+
+#outliers_alt <- alt_run$RT[abs(z_scores) > 3]
+  #tibble(outliers_alt)
+
+
+```
+
+### Determine and Remove Outliers (Error way...)
+
+```{r}
+# we are testing for accuracy, so we need at least 80% accuracy in all trials per participant 
+#determine 80% accuracy 
+crit <- 896 - (896 * .8)
+crit # need at least 179 out of 896 trials to be correct, denoted by 0 in error col
+sum_er <- alt_run %>% 
+  group_by(id) %>% 
+summarize(sum = sum(error)) %>% 
+  print()
+
+sum_er <- sum_er %>% 
+  mutate(outlier_er =  (sum > crit)) %>% 
+  print()
+  
+sum_er <- sum_er %>% 
+  filter(outlier_er == !FALSE) %>% 
+  print()
+view(sum_er) #two people fall below 80% accuracy
+
+#removing those outliers here 
+
+alt_run_e <- alt_run %>% 
+  filter(id != 70, id != 87)
+view(alt_run_e)
+
+```
+
 ## Descriptive Graphs
 
-### Histogram of RT
+### 1. Histogram of RT
 
 ```{r}
 mean_rt <- mean(alt_run$RT, na.rm = TRUE)
+mean_rt
 sd_rt <-  sd(alt_run$RT, na.rm = TRUE)
 
-alt_run %>% arrange(desc(RT)) #there are quite a few RTs that get up to 10000 ms for one trial... determine outliers
 
 alt_run %>% 
   ggplot(aes(x=RT)) +
@@ -96,7 +173,7 @@ alt_run %>%
     labs(x= 'Response Times (ms)', y= 'Density', title = 'Histogram of Response Times', subtitle = 'The mean and normal density curve of RTs') 
 ```
 
-### Boxplot of RT
+### 2. Boxplot of RT
 
 ```{r}
 #boxplot of all RTs regardless of task
@@ -111,7 +188,7 @@ boxplot_c <- filter(alt_run_1, task == 'color')
 boxplot(boxplot_c$RT)
 ```
 
-### Correlations
+### 3. Correlations
 
 ```{r}
 cor_alt <- alt_run %>% 
