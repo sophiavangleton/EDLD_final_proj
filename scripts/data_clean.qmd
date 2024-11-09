@@ -202,3 +202,11 @@ cor_alt <- alt_run_e %>%
     select(RT, error) %>%
     pairs.panels(lm = TRUE)
 ```
+
+**5. Scatterplot in select**
+
+**6. Selecting : already did?**
+
+**7. Pivoting**
+
+**8. Descriptives table**
