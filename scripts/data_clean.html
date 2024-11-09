@@ -381,15 +381,15 @@ dbl (16): id, bal, block, x, cond, trial, y, c2, cycle, task, dim1, dim2, co...
 <section id="histogram-of-rt" class="level3">
 <h3 class="anchored" data-anchor-id="histogram-of-rt">1. Histogram of RT</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>mean_rt <span class="ot">&lt;-</span> <span class="fu">mean</span>(alt_run<span class="sc">$</span>RT, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>mean_rt <span class="ot">&lt;-</span> <span class="fu">mean</span>(alt_run_e<span class="sc">$</span>RT, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
 <span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>mean_rt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 861.5393</code></pre>
+<pre><code>[1] 860.4441</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>sd_rt <span class="ot">&lt;-</span>  <span class="fu">sd</span>(alt_run<span class="sc">$</span>RT, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>sd_rt <span class="ot">&lt;-</span>  <span class="fu">sd</span>(alt_run_e<span class="sc">$</span>RT, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
 <span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>alt_run <span class="sc">%&gt;%</span> </span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>alt_run_e <span class="sc">%&gt;%</span> </span>
 <span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>RT)) <span class="sc">+</span></span>
 <span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="fu">aes</span>(<span class="at">y =</span> <span class="fu">after_stat</span>(density)), <span class="at">fill =</span> <span class="st">'darkgray'</span>, <span class="at">color =</span> <span class="st">'darkblue'</span>) <span class="sc">+</span></span>
 <span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="fu">aes</span>(<span class="at">xintercept =</span> mean_rt) , <span class="at">color =</span> <span class="st">'red'</span>, <span class="at">linetype =</span> <span class="st">'dashed'</span>, <span class="at">size =</span> <span class="fl">1.5</span>) <span class="sc">+</span></span>
@@ -449,14 +449,14 @@ dbl (16): id, bal, block, x, cond, trial, y, c2, cycle, task, dim1, dim2, co...
 <section id="correlations" class="level3">
 <h3 class="anchored" data-anchor-id="correlations">3. Correlations</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>cor_alt <span class="ot">&lt;-</span> alt_run <span class="sc">%&gt;%</span> </span>
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>cor_alt <span class="ot">&lt;-</span> alt_run_e <span class="sc">%&gt;%</span> </span>
 <span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(RT, cycle, task)</span>
 <span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cor</span>(cor_alt, <span class="at">use =</span> <span class="st">"complete.obs"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>               RT      cycle        task
-RT     1.00000000 -0.1618331 -0.05092773
-cycle -0.16183306  1.0000000  0.87287156
-task  -0.05092773  0.8728716  1.00000000</code></pre>
+RT     1.00000000 -0.1627983 -0.05256423
+cycle -0.16279828  1.0000000  0.87287156
+task  -0.05256423  0.8728716  1.00000000</code></pre>
 </div>
 </div>
 <div class="cell">
