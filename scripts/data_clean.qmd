@@ -159,12 +159,12 @@ view(alt_run_e)
 ### 1. Histogram of RT
 
 ```{r}
-mean_rt <- mean(alt_run$RT, na.rm = TRUE)
+mean_rt <- mean(alt_run_e$RT, na.rm = TRUE)
 mean_rt
-sd_rt <-  sd(alt_run$RT, na.rm = TRUE)
+sd_rt <-  sd(alt_run_e$RT, na.rm = TRUE)
 
 
-alt_run %>% 
+alt_run_e %>% 
   ggplot(aes(x=RT)) +
   geom_histogram(aes(y = after_stat(density)), fill = 'darkgray', color = 'darkblue') +
   geom_vline(aes(xintercept = mean_rt) , color = 'red', linetype = 'dashed', size = 1.5) +
@@ -191,7 +191,7 @@ boxplot(boxplot_c$RT)
 ### 3. Correlations
 
 ```{r}
-cor_alt <- alt_run %>% 
+cor_alt <- alt_run_e %>% 
   select(RT, cycle, task)
   cor(cor_alt, use = "complete.obs")
 ```
