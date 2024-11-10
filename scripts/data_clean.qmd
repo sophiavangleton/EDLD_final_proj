@@ -203,7 +203,61 @@ cor_alt <- alt_run_e %>%
     pairs.panels(lm = TRUE)
 ```
 
-**5. Scatterplot in select**
+**5. Scatterplots in select**
+
+-   What is the relationship between error and response time?
+
+-   What is the position of the cycle and the relationship from that to the response time?
+
+-   What are the dynamics of switching tasks? (5^th^ cycle or 1^st^)
+
+-   Is there a difference in response time when people swtich from task to another?
+
+```{r}
+#inspect alt_run_e dataset
+head(alt_run_e)
+```
+
+```{r}
+#relationship between error and response time
+#There are only two conditions of error: 0= No error, 1= Yes error
+#Makes scatterplots relations with RT on 2 linear lines. 
+alt_run_e %>%
+  ggplot(aes(RT,error))+
+  geom_point()
+  
+```
+
+```{r}
+#position of cylce and relationship with response time
+#relationship between Response Time and Cycle also produces some scatterplots
+#output is liner and not sure of what it says about the data
+alt_run_e %>% 
+  ggplot(aes(RT,cycle))+
+  geom_point()
+```
+
+```{r}
+#position of cycle in relation to response time?
+alt_run_e %>% 
+  ggplot(aes(cycle,RT)) +
+  geom_point()
+```
+
+#### narrow df for plotting
+
+```{r}
+alt_select <- alt_run_e %>% 
+  select(task, trial,cycle,response,error,RT)
+head(alt_select)
+```
+
+```{r}
+# task and response time
+alt_select %>% 
+  ggplot(aes(RT,task))+
+  geom_point()
+```
 
 **6. Selecting : already did?**
 
