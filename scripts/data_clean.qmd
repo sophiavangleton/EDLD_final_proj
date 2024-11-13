@@ -59,6 +59,7 @@ alt_run
 ```
 
 ### Replace Numeric Values w Character Strings for Task and Error
+This is set to a new df in case we want to use the variables for task or error in a graph as a character. 
 
 ```{r}
 # replace numeric values w character strings for task and error
@@ -81,20 +82,49 @@ alt_run <- alt_run %>%
 #   pivot_wider(names_from = task, values_from = block)
 ```
 
-### Determine and Remove Outliers (RT way...)
+### Determine and Remove Outliers (Error way...)
 
 ```{r}
+# we are testing for accuracy, so we need at least 80% accuracy in all trials per participant 
+#determine 80% accuracy 
+crit <- 896 - (896 * .8)
+crit # need at least 179 out of 896 trials to be correct, denoted by 0 in error col
+sum_er <- alt_run %>% 
+  group_by(id) %>% 
+summarize(sum = sum(error)) %>% 
+  print()
 
+sum_er <- sum_er %>% 
+  mutate(outlier_er =  (sum > crit)) %>% 
+  print()
+  
+sum_er <- sum_er %>% 
+  filter(outlier_er == !FALSE) %>% 
+  print() #two people fall below 80% accuracy
 
+#removing those outliers here 
+
+alt_run <- alt_run %>% 
+  filter(id != 70, id != 87)
+
+```
+
+### Determine and Remove inter-response Outliers 
+
+```{r}
+#lets look at the top RTs. 
 alt_run %>% 
   arrange(desc(RT))
-#there are quite a few RTs that get up to 10000 ms for one trial... determine outliers
-
-#need to group by participant to get overall mean and sd for reaction time to determine which subjects to omit from the dataset. Thinking that 3 SDs above or below the mean is a  good criterion for outliers. 
 
 #WHAT TO DO: zscore on each seq postiion x switch x abiguity on RT then zscore on each block (to account for some participants only doing 7 instaead of 8 blocks) 
 
-#cycles of 4 mutate to make a new group for easier cycle analysis
+#STEP 1: cycles of 4 mutate to make a new group for easier cycle analysis
+alt_run <- alt_run %>% 
+  mutate(switchcyc = if_else(cycle == 5, 1, cycle, NA_real_) , controlcyc = if_else(cycle != 1,5, cycle, NA_real_))
+alt_run
+
+#(switchcyc = if_else(cycle == 1, cycle, NA_real_), controlcyc = if_else(cycle != 5, cycle, NA_real_))
+
 
 #mean_rt_per <- alt_run %>% 
  # group_by(id) %>% 
@@ -121,37 +151,6 @@ alt_run %>%
 
 #outliers_alt <- alt_run$RT[abs(z_scores) > 3]
   #tibble(outliers_alt)
-
-
-```
-
-### Determine and Remove Outliers (Error way...)
-
-```{r}
-# we are testing for accuracy, so we need at least 80% accuracy in all trials per participant 
-#determine 80% accuracy 
-crit <- 896 - (896 * .8)
-crit # need at least 179 out of 896 trials to be correct, denoted by 0 in error col
-sum_er <- alt_run %>% 
-  group_by(id) %>% 
-summarize(sum = sum(error)) %>% 
-  print()
-
-sum_er <- sum_er %>% 
-  mutate(outlier_er =  (sum > crit)) %>% 
-  print()
-  
-sum_er <- sum_er %>% 
-  filter(outlier_er == !FALSE) %>% 
-  print()
-view(sum_er) #two people fall below 80% accuracy
-
-#removing those outliers here 
-
-alt_run_e <- alt_run %>% 
-  filter(id != 70, id != 87)
-view(alt_run_e)
-
 ```
 
 ## Descriptive Graphs
@@ -159,18 +158,20 @@ view(alt_run_e)
 ### 1. Histogram of RT
 
 ```{r}
-mean_rt <- mean(alt_run_e$RT, na.rm = TRUE)
+mean_rt <- mean(alt_run$RT, na.rm = TRUE)
 mean_rt
-sd_rt <-  sd(alt_run_e$RT, na.rm = TRUE)
+sd_rt <-  sd(alt_run$RT, na.rm = TRUE)
 
 
-alt_run_e %>% 
+alt_run %>% 
   ggplot(aes(x=RT)) +
-  geom_histogram(aes(y = after_stat(density)), fill = 'darkgray', color = 'darkblue') +
+  geom_histogram(aes(y = after_stat(density)), fill = 'darkgreen', color = 'darkblue') +
   geom_vline(aes(xintercept = mean_rt) , color = 'red', linetype = 'dashed', size = 1.5) +
     theme_minimal() +
-  stat_function(fun = dnorm, args = list(mean = mean_rt, sd = sd_rt) ,  col = 'darkred', size = 1.5) +
-    labs(x= 'Response Times (ms)', y= 'Density', title = 'Histogram of Response Times', subtitle = 'The mean and normal density curve of RTs') 
+  stat_function(fun = dnorm, args = list(mean = mean_rt, sd = sd_rt) ,  col = 'gold', size = 1.5) +
+    labs(x= 'Response Times (ms)', y= 'Density', title = 'Density plot of Response Times', subtitle = 'The mean and normal density curve of RTs') 
+
+plotly::ggplotly()
 ```
 
 ### 2. Boxplot of RT
@@ -191,7 +192,7 @@ boxplot(boxplot_c$RT)
 ### 3. Correlations
 
 ```{r}
-cor_alt <- alt_run_e %>% 
+cor_alt <- alt_run %>% 
   select(RT, cycle, task)
   cor(cor_alt, use = "complete.obs")
 ```
@@ -214,15 +215,15 @@ cor_alt <- alt_run_e %>%
 -   Is there a difference in response time when people swtich from task to another?
 
 ```{r}
-#inspect alt_run_e dataset
-head(alt_run_e)
+#inspect alt_run dataset
+head(alt_run)
 ```
 
 ```{r}
 #relationship between error and response time
 #There are only two conditions of error: 0= No error, 1= Yes error
 #Makes scatterplots relations with RT on 2 linear lines. 
-alt_run_e %>%
+alt_run %>%
   ggplot(aes(RT,error))+
   geom_point()
   
@@ -232,14 +233,14 @@ alt_run_e %>%
 #position of cylce and relationship with response time
 #relationship between Response Time and Cycle also produces some scatterplots
 #output is liner and not sure of what it says about the data
-alt_run_e %>% 
+alt_run %>% 
   ggplot(aes(RT,cycle))+
   geom_point()
 ```
 
 ```{r}
 #position of cycle in relation to response time?
-alt_run_e %>% 
+alt_run %>% 
   ggplot(aes(cycle,RT)) +
   geom_point()
 ```
@@ -247,7 +248,7 @@ alt_run_e %>%
 #### narrow df for plotting
 
 ```{r}
-alt_select <- alt_run_e %>% 
+alt_select <- alt_run %>% 
   select(task, trial,cycle,response,error,RT)
 head(alt_select)
 ```
