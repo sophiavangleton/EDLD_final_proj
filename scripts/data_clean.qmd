@@ -59,7 +59,8 @@ alt_run
 ```
 
 ### Replace Numeric Values w Character Strings for Task and Error
-This is set to a new df in case we want to use the variables for task or error in a graph as a character. 
+
+This is set to a new df in case we want to use the variables for task or error in a graph as a character.
 
 ```{r}
 # replace numeric values w character strings for task and error
@@ -109,7 +110,7 @@ alt_run <- alt_run %>%
 
 ```
 
-### Determine and Remove inter-response Outliers 
+### Determine and Remove inter-response Outliers
 
 ```{r}
 #lets look at the top RTs. 
