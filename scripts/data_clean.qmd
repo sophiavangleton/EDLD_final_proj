@@ -116,41 +116,20 @@ alt_run <- alt_run %>%
 alt_run %>% 
   arrange(desc(RT))
 
-#WHAT TO DO: zscore on each seq postiion x switch x abiguity on RT then zscore on each block (to account for some participants only doing 7 instaead of 8 blocks) 
+#WHAT TO DO: z-score on each seq position x switch x ambiguity on RT then z-score on each block (to account for some participants only doing 7 instead of 8 blocks) 
 
-#STEP 1: cycles of 4 mutate to make a new group for easier cycle analysis
+#STEP 1: separate switch trials, c(1,5) and control trials !c(1,5)
+
 alt_run <- alt_run %>% 
-  mutate(switchcyc = if_else(cycle == 5, 1, cycle, NA_real_) , controlcyc = if_else(cycle != 1,5, cycle, NA_real_))
+  mutate(switchcyc = if_else(cycle %in% c(1,5), cycle, NA_real_) , controlcyc = if_else(!cycle %in% c(1,5), cycle, NA_real_))
 alt_run
 
-#(switchcyc = if_else(cycle == 1, cycle, NA_real_), controlcyc = if_else(cycle != 5, cycle, NA_real_))
+#STEP 2: Isolate RTs for switch trials, look for outliers through z-score
 
+#STEP 3: Isolate RTs for control trials, look for outliers through z-score
 
-#mean_rt_per <- alt_run %>% 
- # group_by(id) %>% 
- # summarize(mean(RT, na.rm = TRUE)) %>% 
- # print()
+#STEP 4: Start steps for z-score on each block
 
-#sd_rt_per <- alt_run %>% 
- # group_by(id) %>% 
- # summarize(sd(RT, na.rm = TRUE)) %>% 
-#  print()
-
-#z_scores <- (alt_run$RT - mean_rt_per)/sd_rt_per
-
-#alt_run_r <- alt_run %>%
- # group_by(id) %>% 
-  #mutate(z_scores = z_scores) %>% 
-  #select(z_scores, RT, id) %>% 
- # print()
-
-
-#alt_run %>% 
- # group_by(z_scores, id) %>% 
- # print()
-
-#outliers_alt <- alt_run$RT[abs(z_scores) > 3]
-  #tibble(outliers_alt)
 ```
 
 ## Descriptive Graphs
