@@ -121,13 +121,30 @@ alt_run %>%
 
 #STEP 1: separate switch trials, c(1,5) and control trials !c(1,5)
 
+
 alt_run <- alt_run %>% 
-  mutate(switchcyc = if_else(cycle %in% c(1,5), cycle, NA_real_) , controlcyc = if_else(!cycle %in% c(1,5), cycle, NA_real_))
+  mutate(trial_type = if_else(cycle %in% c(1,5), 'switch', 'control'))
 alt_run
 
-#STEP 2: Isolate RTs for switch trials, look for outliers through z-score
+#STEP 2: Look at mean RTs by Trial_type, look at z-scores
 
-#STEP 3: Isolate RTs for control trials, look for outliers through z-score
+z_scoretrial <- alt_run %>% 
+  group_by(trial_type) %>% 
+  mutate(z= (RT- mean(RT))/sd(RT)) %>% 
+  summarize(z_score_mean = mean(z, na.rm = TRUE),z_score_sd = sd(z, na.rm = TRUE), response_time_mean = mean(RT, na.rm = TRUE),response_time_mean = sd(RT, na.rm= TRUE))
+
+z_scoretrial
+
+#STEP 2.1: Interpret the data
+
+#so this is telling us that our mean z-score for both control and switch is basically 0 (which is what we want to see) and that our z sd is 1 (which is also what we want to see). looking at the mean for RT in both switch and control, we see that the response time means tend to be a lot longer on average than the average response time for control trials (non-switch trials). this is so cool!
+
+rtdif <- z_scoretrial %>% 
+  summarize(meandif = 889.9560 - 579.1123) 
+rtdif #difference in means by 310.8437 where the switch trial takes 310.84 ms longer than the control or non-switch trials. 
+
+#STEP 2: Look at mean RTs by Trial_type, look at z-scores
+
 
 #STEP 4: Start steps for z-score on each block
 
