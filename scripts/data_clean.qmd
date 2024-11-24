@@ -209,7 +209,7 @@ cor_alt <- alt_run %>%
 
 -   What are the dynamics of switching tasks? (5^th^ cycle or 1^st^)
 
--   Is there a difference in response time when people swtich from task to another?
+-   Is there a difference in response time when people switch from task to another?
 
 ```{r}
 #inspect alt_run dataset
@@ -261,4 +261,4 @@ alt_select %>%
 
 **7. Pivoting**
 
-**8. Descriptives table**
+**8. Descriptive table**
