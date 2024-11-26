@@ -257,8 +257,37 @@ alt_select %>%
   geom_point()
 ```
 
-**6. Selecting : already did?**
-
 **7. Pivoting**
 
+This code pivots the data so that each trial type has its own column ("switch" and "control"), and each column holds the reponse time for each combination of condition and trial. There are missing values because each row only corresponds to one trial type. For this reason, we choose to use a long format for this data instead.
+
+```{r}
+alt_run_wide <- alt_run %>%
+  pivot_wider(
+    names_from = trial_type,          # Use trial_type as column names
+    values_from = response,      # Fill columns with response_time values
+    names_prefix = "response_time_"   # Add a prefix to the new column names
+  )
+
+```
+
 **8. Descriptive table**
+
+The descriptive table below shows the mean, median, and standard deviation of participants' response times.
+
+```{r}
+
+mean_rt <- mean(alt_run$response, na.rm = TRUE) 
+median_rt <- median(alt_run$response, na.rm = TRUE)
+sd_rt <- sd(alt_run$response, na.rm = TRUE) 
+
+# Create a descriptive table
+summary_table <- data.frame(
+  Statistic = c("Mean", "Median", "Standard Deviation"),
+  Response_time = c(mean_rt, median_rt, sd_rt)
+)
+
+# Print the summary table
+print(summary_table)
+
+```
