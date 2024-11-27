@@ -292,7 +292,7 @@ mean_rt_switch <- mean(alt_run_wide$response_time_switch, na.rm = TRUE)
 median_rt_switch <- median(alt_run_wide$response_time_switch, na.rm = TRUE)
 sd_rt_switch <- sd(alt_run_wide$response_time_switch, na.rm = TRUE)
 
-# Descriptive table for all three columns: response_time_control, response_time_switch, and overall response
+# Descriptive table for two columns: response_time_control and response_time_switch
 summary_table <- data.frame(
   Statistic = c("Mean", "Median", "Standard Deviation"),
   Response_time_control = c(mean_rt_control, median_rt_control, sd_rt_control),
