@@ -123,7 +123,7 @@ alt_run %>%
 
 
 alt_run <- alt_run %>% 
-  mutate(trial_type = if_else(cycle %in% c(1,5), 'switch', 'control'))
+  mutate(trial_type = if_else(cycle %in% c(1,5), 'switch', 'control')) #saying if its 1 or 5 assign switch, else, assign control. so cool. need to also throw out the first trial after each block bc its not a switch or noswitch. need to separate into cycle positions of 4, so total conditions are 16 
 alt_run
 
 #STEP 2: Look at mean RTs by Trial_type, look at z-scores
