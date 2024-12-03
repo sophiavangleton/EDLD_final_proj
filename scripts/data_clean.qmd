@@ -2,6 +2,8 @@
 title: "data_clean"
 format: html
 editor: visual
+toc: true
+#adding a TOC for ease of viewing the HTML
 ---
 
 # Final Project: Alternate Runs Data-set
@@ -169,6 +171,8 @@ alt_run %>%
     labs(x= 'Response Times (ms)', y= 'Density', title = 'Density plot of Response Times', subtitle = 'The mean and normal density curve of RTs') 
 
 plotly::ggplotly()
+
+#I hadn't seen an interactive graph made in R before, this is a really cool function. 
 ```
 
 ### 2. Boxplot of RT
@@ -223,7 +227,12 @@ head(alt_run)
 alt_run %>%
   ggplot(aes(RT,error))+
   geom_point()
-  
+
+# alt_run %>%
+#   ggplot(aes(RT,error))+
+#   geom_col()
+
+# I tried some other graph options for this but wasn't able to find one that was more accessible. The geom_point graph above is the only one that I had trouble understanding, due to the clutering of points and only values of 0 or 1. What is the message that this graph is trying to convey?
 ```
 
 ```{r}
@@ -269,6 +278,7 @@ alt_run_wide <- alt_run %>%
     names_prefix = "response_time_"   
   )
 
+# I appreciate seeing pivot_wider in a real world use 
 ```
 
 **8. Descriptive table**
