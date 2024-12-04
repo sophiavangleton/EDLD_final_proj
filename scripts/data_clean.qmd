@@ -143,6 +143,14 @@ rtdif <- z_scoretrial %>%
   summarize(meandif = 889.9560 - 579.1123) 
 rtdif #difference in means by 310.8437 where the switch trial takes 310.84 ms longer than the control or non-switch trials. 
 
+# Identify outliers (z-scores beyond -3 and 3)
+
+outliers_IRT <- alt_run %>%
+  group_by(trial_type) %>% 
+  mutate(z_score = (RT- mean(RT))/sd(RT)) %>% 
+  filter(abs(z_score) > 3)
+outliers_IRT
+
 # Calculate the mean and standard error of RT for each trial_type
 summary_data <- alt_run %>% 
   group_by(trial_type) %>% 
