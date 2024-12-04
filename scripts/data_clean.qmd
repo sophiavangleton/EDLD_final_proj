@@ -2,6 +2,14 @@
 title: "data_clean"
 format: html
 editor: visual
+
+# by Maiko: Hi I originally put here if you might want to add a few more here in the header, as our team added the followings for hiding codes/warnings and to keep it APA, but it looks like you might be doing something a bit beyond my complete novice stage? I am curious how you'll hide all the codes - will you add these to the header later, or do something else? Just curious :) : 
+# csl: apa.csl
+# execute: 
+#  eval: true 
+#  echo: false
+#  message: false 
+#  warning: false
 ---
 
 # Final Project: Alternate Runs Data-set
@@ -9,6 +17,10 @@ editor: visual
 **Experimental design:**  Switching every 4 trials in an alternating runs manner (no cues). Total of 8 experimental blocks were intended, but 60 subjects saw only 7 blocks. Across these blocks counterbalancing of four conditions: Both tasks unambiguous (1), both tasks ambiguous (4), shape ambiguous when irrelevant, color always ambiguous (2), shape always ambiguous, color unambiguous when irrelevant (2)
 
 ### **What the variables mean:**
+
+```{r}
+# by Maiko: I really appreciate how you "broke down" the variables! I think my group should actually do this, so thank you for organizing it this way. 
+```
 
 -   block: 0 for practice, there are a total of 8 blocks per part and each block consists of 112 trials. So 896 trials per participant over all 7 blocks (not counting practice)
 
@@ -35,6 +47,8 @@ editor: visual
 ### Import data-set and some packages
 
 ```{r}
+# by Maiko: Thank you for introducing me to "psych", I'm exited to see what it can do! 
+
 #open neccesary packages here
 library(tidyverse)
 library(janitor)
@@ -56,6 +70,7 @@ alt_run <- AlternateRuns %>%
   rename(dimshape = dim1, dimcolor = dim2, RT = time, correct = cor, response = res)
 alt_run
 
+# by Maiko: This makes a lot of sense as these variable names don't make much of a sense. Definitely another thing our team has been thinking about and haven't done! 
 ```
 
 ### Replace Numeric Values w Character Strings for Task and Error
@@ -81,6 +96,8 @@ alt_run <- alt_run %>%
 
 # alt_run %>% 
 #   pivot_wider(names_from = task, values_from = block)
+
+# by Maiko: I LOVE the explanation below AND how you organized the process by having headings before each code chunks, thank you so much for doing this - this made it easier to understand the thinking behind the codes (e.g. the first like with (896 %.8)). Something to think about for me going forward w/ Github. And, also, I usually leave the "bad" code chunks that didn't work to avoid doing similar things, and it's validating to see you take a similar approach! 
 ```
 
 ### Determine and Remove Outliers (Error way...)
@@ -104,6 +121,8 @@ sum_er <- sum_er %>%
   print() #two people fall below 80% accuracy
 
 #removing those outliers here 
+
+# by Maiko: Thank you for the notes that 2 fall behind accuracy! I'm learning tons as you're showing me how to make the dataset into bitable sizes to analyze and how to analyze. 
 
 alt_run <- alt_run %>% 
   filter(id != 70, id != 87)
@@ -199,6 +218,8 @@ cor_alt <- alt_run %>%
   alt_run %>% 
     select(RT, error) %>%
     pairs.panels(lm = TRUE)
+  
+# by Maiko: Ah, the psych package! This is interesting, but I feel like I still don't understand how to read it (probably because I don't have enough background)
 ```
 
 **5. Scatterplots in select**
@@ -297,6 +318,8 @@ head(alt_select)
 alt_select %>% 
   ggplot(aes(RT,task))+
   geom_point()
+
+# by Maiko: It's so much fun to see how you explored different plots to see what might make sense! 
 ```
 
 **7. Pivoting**
