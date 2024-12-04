@@ -143,10 +143,24 @@ rtdif <- z_scoretrial %>%
   summarize(meandif = 889.9560 - 579.1123) 
 rtdif #difference in means by 310.8437 where the switch trial takes 310.84 ms longer than the control or non-switch trials. 
 
-#STEP 2: Look at mean RTs by Trial_type, look at z-scores
+# Calculate the mean and standard error of RT for each trial_type
+summary_data <- alt_run %>% 
+  group_by(trial_type) %>% 
+  summarise( mean_RT = mean(RT), se_RT = sd(RT) / sqrt(n()) ) %>% mutate(lower_CI = mean_RT - qt(0.975, df = n() - 1) * se_RT, upper_CI = mean_RT + qt(0.975, df = n() - 1) * se_RT)
+summary_data
+
+#segregate based on cycle position and add 95% CI
+
+cycle_plot <- summary_data %>% 
+  ggplot(aes(trial_type, mean_RT)) +
+  geom_col(fill= '#9CAF88') +
+  geom_errorbar(aes(ymin = lower_CI, ymax = upper_CI), width = 0.2, color = 'brown') +
+  labs(title = 'Trial Type By Response Time', subtitle = 'Relationship between response times and switch/no-switch trials', x= "Trial Type", y= 'Response Time (ms)')+
+  theme_minimal() 
+cycle_plot
+  
 
 
-#STEP 4: Start steps for z-score on each block
 
 ```
 
@@ -222,7 +236,7 @@ head(alt_run)
 #Makes scatterplots relations with RT on 2 linear lines. 
 alt_run %>%
   ggplot(aes(RT,error))+
-  geom_point()
+  geom_col()
   
 ```
 
