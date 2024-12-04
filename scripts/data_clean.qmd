@@ -169,6 +169,8 @@ alt_run %>%
     labs(x= 'Response Times (ms)', y= 'Density', title = 'Density plot of Response Times', subtitle = 'The mean and normal density curve of RTs') 
 
 plotly::ggplotly()
+
+#very pretty visually! Love the colors
 ```
 
 ### 2. Boxplot of RT
@@ -268,6 +270,7 @@ alt_run_wide <- alt_run %>%
     values_from = RT,      # Fill columns with response_time values
     names_prefix = "response_time_"   
   )
+#I'm still confused on the pivoting 
 
 ```
 
@@ -301,4 +304,6 @@ summary_table <- data.frame(
 
 # Print the summary table
 print(summary_table)
+
+#nice! love the great start and sounds like an interesting research question! 
 ```
