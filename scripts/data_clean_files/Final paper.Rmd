@@ -1,6 +1,5 @@
 ---
 title             : "EDLD Final Paper"
-shorttitle        : "Title"
 
 author: 
   - name          : "Fiona DeBernardi"
