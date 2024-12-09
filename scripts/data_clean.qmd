@@ -43,7 +43,7 @@ library(rio)
 library(psych) #generate metrix w scatterplot and cor
 #import dataset
 AlternateRuns <- read_csv("AlternateRuns.csv")
-view(AlternateRuns)
+#view(AlternateRuns)
 ```
 
 ## Clean-Data
@@ -214,6 +214,48 @@ cor_alt <- alt_run %>%
 ```{r}
 #inspect alt_run dataset
 head(alt_run)
+```
+
+```{r}
+#Err v RT geom_col. Basic  graph
+alt_run %>% 
+  ggplot(aes(RT, error))+
+  geom_col()
+```
+
+```{r}
+#Err v RT with color effect
+ggplot(alt_run, aes(x = RT, y = error, fill = error)) +
+  geom_col() +
+  scale_fill_gradient(low = "skyblue", high = "darkblue")+
+    labs(
+    title = "Errors over Response Time",
+    x = "Response Time ",
+    y = "Error Count"
+  )+
+  theme_minimal() +
+  theme_minimal(base_size = 16)
+
+```
+
+```{r}
+ggplot(alt_run, aes(x = RT, y = error, fill = error)) +
+  geom_col(width=1.5) +
+  scale_fill_gradient(low = "skyblue", high = "darkblue")+
+  labs(
+    title = "Errors over Response Time",
+    x = "Response Time ",
+    y = "Error Count"
+  ) +
+  theme_minimal()
++ theme_minimal(base_size = 16)
+```
+
+```{r}
+ggplot(alt_run, aes(x = RT, y = error, fill = error)) +
+  geom_col() +
+  guides(fill = guide_colorbar(title = "Error Level"))
+
 ```
 
 ```{r}
