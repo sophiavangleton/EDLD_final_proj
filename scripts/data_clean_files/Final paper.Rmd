@@ -3,27 +3,14 @@ title             : "EDLD Final Paper"
 
 author: 
   - name          : "Fiona DeBernardi"
-    affiliation   : "University of Oregon"
-    role: # Contributorship roles
-      - "Conceptualization"
-      - "Writing - Original Draft Preparation"
-      - "Writing - Review & Editing"
+    affiliation   : "University of Oregon, Psychology Department"
+
   - name          : "Author 2"
     affiliation   : "1,2"
-    role:
-      - "Writing - Review & Editing"
-      - "Supervision"
+
   - name          : "Author 3"
     affiliation   : "1,2"
-    role:
-      - "Writing - Review & Editing"
-      - "Supervision"
 
-affiliation:
-  - id            : "1"
-    institution   : "Wilhelm-Wundt-University"
-  - id            : "2"
-    institution   : "Konstanz Business School"
 
 authornote: |
   Add complete departmental affiliations for each author here. Each new line herein must be indented, like this line.
