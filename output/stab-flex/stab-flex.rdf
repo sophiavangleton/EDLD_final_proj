@@ -1,0 +1,215 @@
+<rdf:RDF
+ xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+ xmlns:z="http://www.zotero.org/namespaces/export#"
+ xmlns:dcterms="http://purl.org/dc/terms/"
+ xmlns:bib="http://purl.org/net/biblio#"
+ xmlns:dc="http://purl.org/dc/elements/1.1/"
+ xmlns:foaf="http://xmlns.com/foaf/0.1/"
+ xmlns:link="http://purl.org/rss/1.0/modules/link/"
+ xmlns:prism="http://prismstandard.org/namespaces/1.2/basic/">
+    <bib:Article rdf:about="#item_1">
+        <z:itemType>journalArticle</z:itemType>
+        <dcterms:isPartOf>
+           <bib:Journal></bib:Journal>
+        </dcterms:isPartOf>
+    </bib:Article>
+    <bib:Book rdf:about="urn:isbn:978-0-262-28011-2">
+        <z:itemType>book</z:itemType>
+        <dc:publisher>
+            <foaf:Organization>
+               <foaf:name>The MIT Press</foaf:name>
+            </foaf:Organization>
+        </dc:publisher>
+        <bib:authors>
+            <rdf:Seq>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Monsell</foaf:surname>
+                        <foaf:givenName>Stephen</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Driver</foaf:surname>
+                        <foaf:givenName>Jon</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+            </rdf:Seq>
+        </bib:authors>
+        <link:link rdf:resource="#item_10"/>
+        <dc:title>Control of Cognitive Processes: Attention and Performance XVIII</dc:title>
+        <dcterms:abstract>The thirty-two contributions discuss evidence from psychological experiments with healthy and brain-damaged subjects, functional imaging, electrophysiology, and computational modeling.
+            One of the most challenging problems facing cognitive psychology and cognitive neuroscience is to explain how mental processes are voluntarily controlled, allowing the computational resources of the brain to be selected flexibly and deployed to achieve changing goals. The eighteenth of the celebrated international symposia on Attention and Performance focused on this problem, seeking to banish or at least deconstruct the &quot;homunculus&quot;: that conveniently intelligent, but opaque, agent still lurking within many theories, under the guise of a central executive or supervisory attentional system assumed to direct processes that are not &quot;automatic.&quot;
+            The thirty-two contributions discuss evidence from psychological experiments with healthy and brain-damaged subjects, functional imaging, electrophysiology, and computational modeling. Four sections focus on specific forms of control: of visual attention, of perception-action coupling, of task-switching and dual-task performance, and of multistep tasks. The other three sections extend the interdisciplinary approach, with chapters on the neural substrate of control, studies of control disorders, and computational simulations. The progress achieved in fractionating, localizing, and modeling control functions, and in understanding the interaction between stimulus-driven and voluntary control, takes research on control in the mind/brain to a new level of sophistication.
+            Bradford Books imprint</dcterms:abstract>
+        <dc:date>2000-10-23</dc:date>
+        <z:language>en</z:language>
+        <z:shortTitle>Control of Cognitive Processes</z:shortTitle>
+        <z:libraryCatalog>DOI.org (Crossref)</z:libraryCatalog>
+        <dc:identifier>
+            <dcterms:URI>
+                <rdf:value>https://direct.mit.edu/books/book/4785/Control-of-Cognitive-ProcessesAttention-and</rdf:value>
+            </dcterms:URI>
+        </dc:identifier>
+        <dcterms:dateSubmitted>2024-12-10 22:00:24</dcterms:dateSubmitted>
+        <dc:description>DOI: 10.7551/mitpress/1481.001.0001</dc:description>
+        <dc:identifier>ISBN 978-0-262-28011-2</dc:identifier>
+    </bib:Book>
+    <z:Attachment rdf:about="#item_10">
+        <z:itemType>attachment</z:itemType>
+        <rdf:resource rdf:resource="files/10/task-switching rigid v flexible self control Merian N. 2010.pdf"/>
+        <dc:title>task-switching rigid v flexible self control Merian N. 2010</dc:title>
+        <link:type>application/pdf</link:type>
+    </z:Attachment>
+    <bib:Article rdf:about="https://linkinghub.elsevier.com/retrieve/pii/S2352154624000408">
+        <z:itemType>journalArticle</z:itemType>
+        <dcterms:isPartOf rdf:resource="urn:issn:23521546"/>
+        <bib:authors>
+            <rdf:Seq>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Mayr</foaf:surname>
+                        <foaf:givenName>Ulrich</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Grätz</foaf:surname>
+                        <foaf:givenName>Dominik</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+            </rdf:Seq>
+        </bib:authors>
+        <link:link rdf:resource="#item_7"/>
+        <dc:title>Does cognitive control have a general stability/flexibility tradeoff problem?</dc:title>
+        <dc:date>06/2024</dc:date>
+        <z:language>en</z:language>
+        <z:libraryCatalog>DOI.org (Crossref)</z:libraryCatalog>
+        <dc:identifier>
+            <dcterms:URI>
+                <rdf:value>https://linkinghub.elsevier.com/retrieve/pii/S2352154624000408</rdf:value>
+            </dcterms:URI>
+        </dc:identifier>
+        <dcterms:dateSubmitted>2024-12-10 22:00:26</dcterms:dateSubmitted>
+        <bib:pages>101389</bib:pages>
+    </bib:Article>
+    <bib:Journal rdf:about="urn:issn:23521546">
+        <prism:volume>57</prism:volume>
+        <dc:title>Current Opinion in Behavioral Sciences</dc:title>
+        <dc:identifier>DOI 10.1016/j.cobeha.2024.101389</dc:identifier>
+        <dcterms:alternative>Current Opinion in Behavioral Sciences</dcterms:alternative>
+        <dc:identifier>ISSN 23521546</dc:identifier>
+    </bib:Journal>
+    <z:Attachment rdf:about="#item_7">
+        <z:itemType>attachment</z:itemType>
+        <rdf:resource rdf:resource="files/7/Mayr and Grätz - 2024 - Does cognitive control have a general stabilityflexibility tradeoff problem.pdf"/>
+        <dc:title>PDF</dc:title>
+        <link:type>application/pdf</link:type>
+    </z:Attachment>
+    <bib:Book rdf:about="https://direct.mit.edu/books/book/4785/Control-of-Cognitive-ProcessesAttention-and">
+        <z:itemType>book</z:itemType>
+        <dc:publisher>
+            <foaf:Organization>
+               <foaf:name>The MIT Press</foaf:name>
+            </foaf:Organization>
+        </dc:publisher>
+        <bib:authors>
+            <rdf:Seq>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Monsell</foaf:surname>
+                        <foaf:givenName>Stephen</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Driver</foaf:surname>
+                        <foaf:givenName>Jon</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+            </rdf:Seq>
+        </bib:authors>
+        <link:link rdf:resource="#item_11"/>
+        <dc:title>Control of Cognitive Processes: Attention and Performance XVIII</dc:title>
+        <dcterms:abstract>The thirty-two contributions discuss evidence from psychological experiments with healthy and brain-damaged subjects, functional imaging, electrophysiology, and computational modeling.
+            One of the most challenging problems facing cognitive psychology and cognitive neuroscience is to explain how mental processes are voluntarily controlled, allowing the computational resources of the brain to be selected flexibly and deployed to achieve changing goals. The eighteenth of the celebrated international symposia on Attention and Performance focused on this problem, seeking to banish or at least deconstruct the &quot;homunculus&quot;: that conveniently intelligent, but opaque, agent still lurking within many theories, under the guise of a central executive or supervisory attentional system assumed to direct processes that are not &quot;automatic.&quot;
+            The thirty-two contributions discuss evidence from psychological experiments with healthy and brain-damaged subjects, functional imaging, electrophysiology, and computational modeling. Four sections focus on specific forms of control: of visual attention, of perception-action coupling, of task-switching and dual-task performance, and of multistep tasks. The other three sections extend the interdisciplinary approach, with chapters on the neural substrate of control, studies of control disorders, and computational simulations. The progress achieved in fractionating, localizing, and modeling control functions, and in understanding the interaction between stimulus-driven and voluntary control, takes research on control in the mind/brain to a new level of sophistication.
+            Bradford Books imprint</dcterms:abstract>
+        <dc:date>2000-10-23</dc:date>
+        <z:language>en</z:language>
+        <z:shortTitle>Control of Cognitive Processes</z:shortTitle>
+        <z:libraryCatalog>DOI.org (Crossref)</z:libraryCatalog>
+        <dc:identifier>
+            <dcterms:URI>
+                <rdf:value>https://direct.mit.edu/books/book/4785/Control-of-Cognitive-ProcessesAttention-and</rdf:value>
+            </dcterms:URI>
+        </dc:identifier>
+        <dcterms:dateSubmitted>2024-12-10 22:05:01</dcterms:dateSubmitted>
+        <dc:description>DOI: 10.7551/mitpress/1481.001.0001</dc:description>
+        <dc:identifier>ISBN 978-0-262-28011-2</dc:identifier>
+    </bib:Book>
+    <z:Attachment rdf:about="#item_11">
+        <z:itemType>attachment</z:itemType>
+        <rdf:resource rdf:resource="files/11/Monsell and Driver - 2000 - Control of Cognitive Processes Attention and Performance XVIII.pdf"/>
+        <dc:title>PDF</dc:title>
+        <link:type>application/pdf</link:type>
+    </z:Attachment>
+    <bib:Article rdf:about="https://linkinghub.elsevier.com/retrieve/pii/S0010028514000164">
+        <z:itemType>journalArticle</z:itemType>
+        <dcterms:isPartOf rdf:resource="urn:issn:00100285"/>
+        <bib:authors>
+            <rdf:Seq>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Mayr</foaf:surname>
+                        <foaf:givenName>Ulrich</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Kuhns</foaf:surname>
+                        <foaf:givenName>David</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Hubbard</foaf:surname>
+                        <foaf:givenName>Jason</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+            </rdf:Seq>
+        </bib:authors>
+        <link:link rdf:resource="#item_14"/>
+        <dc:title>Long-term memory and the control of attentional control</dc:title>
+        <dc:date>07/2014</dc:date>
+        <z:language>en</z:language>
+        <z:libraryCatalog>DOI.org (Crossref)</z:libraryCatalog>
+        <dc:identifier>
+            <dcterms:URI>
+                <rdf:value>https://linkinghub.elsevier.com/retrieve/pii/S0010028514000164</rdf:value>
+            </dcterms:URI>
+        </dc:identifier>
+        <dcterms:dateSubmitted>2024-12-10 22:10:37</dcterms:dateSubmitted>
+        <bib:pages>1-26</bib:pages>
+    </bib:Article>
+    <bib:Journal rdf:about="urn:issn:00100285">
+        <prism:volume>72</prism:volume>
+        <dc:title>Cognitive Psychology</dc:title>
+        <dc:identifier>DOI 10.1016/j.cogpsych.2014.02.001</dc:identifier>
+        <dcterms:alternative>Cognitive Psychology</dcterms:alternative>
+        <dc:identifier>ISSN 00100285</dc:identifier>
+    </bib:Journal>
+    <z:Attachment rdf:about="#item_14">
+        <z:itemType>attachment</z:itemType>
+        <rdf:resource rdf:resource="files/14/Mayr et al. - 2014 - Long-term memory and the control of attentional control.pdf"/>
+        <dc:title>PubMed Central Full Text PDF</dc:title>
+        <dc:identifier>
+            <dcterms:URI>
+                <rdf:value>https://pmc.ncbi.nlm.nih.gov/articles/PMC4294623/pdf/nihms569007.pdf</rdf:value>
+            </dcterms:URI>
+        </dc:identifier>
+        <dcterms:dateSubmitted>2024-12-10 22:10:41</dcterms:dateSubmitted>
+        <z:linkMode>1</z:linkMode>
+        <link:type>application/pdf</link:type>
+    </z:Attachment>
+</rdf:RDF>
