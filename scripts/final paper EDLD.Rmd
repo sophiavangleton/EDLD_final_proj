@@ -14,3 +14,20 @@ This study is interested in understanding the relationship between task-switchin
 The paradigm between cognitive stability and cognitive stability is a widely known and established relationship in the world of cognitive science. Both cognitive stability and flexibility are aspects of executive functioning, or what we understand as self-control (Merian, 2010). Cognitive flexibility centers itself in a domain of executive functioning called mental set shifting, and in previous literature, has been understood through the use of the task-switching paradigm. Tasks such as odds-evens, the Stroop task, or other alternating tasks where through the use of cues, participants need to identify an alternating attribute of a stimuli (Merian, 2010). For this study, the task-switch paradigm is constructed through the identification of one of two attributes, color or shape, where they identify color of the stimulus or shape of the stimulus, respectively. According to the established stability/flexibility tradeoff, when one is performing a task that requires more cognitive stability, it is harder to also be more cognitively flexible. This is seen in the task-switch paradigm within-subjects where they have less switch-costs when not switching task cues compared to higher switch-costs when switching from one cue to another (Goschke, 2000). 
 
 However, a recent reevaluation of the generalizability of the stability/flexibility tradeoff has posited that tradeoffs originally thought to explain a plethora of cognitive models, occur only in highly specified contexts (Mayr & Graetz). Instead, there is newfound evidence of an anti-tradeoff pattern, meaning there is co-occurrence of cognitive stability and flexibility depending on the level of resolution encoding (Mayr et al.). These recent findings in the field of decision-making suggest that the stability-flexibility trade off may not be as strong as once thought, however in this study we are still predicting we will see a negative relationship between the switch (flexibility) and no-switch (stability) variables through a comparison of error rate and response time until further studies explain more about a potential anti-tradeoff occurring. Indeed, using the stability-flexibility tradeoff to inform our predictions, we predict that: 1) There is a negative relationship between expression of stability and expression of flexibility. We will see this relationship on three levels, within-subjects, in individual differences, and on the experimental level. We will calculate the difference in reaction times between no-switch and switch trials. A smaller reaction time difference is interpreted as a higher level of stability, whereas a longer reaction time indicates a higher level of flexibility (Goschke, 2000). 
+
+
+#Results
+First, we created a density plot to examine how response times (RT) were distributed in the data set (See Figure 1). We wanted to first examine how participants were responding across all conditions, so we averaged paricipants response times and then put them into this density plot. The average response times (as indicated by the red dashed line) was 860.44 ms, and the standard deviation was 697.28 ms.
+
+[insert code for density plot]
+
+Next, we created a boxplot to show the distribution of response times across all conditions. The plot shows the overall spread of response times for all tasks combined. 
+
+We also wanted to use boxplots to examine the differences in responses between the "shape" task and the "color" task. We did not find any difference between response times; participants responded similarly to both the shape task and the color task, and they did not respond more quickly in one task versus the other.
+
+[insert code for box plot]
+
+Next, we wanted to see how the participants' response times in the control condition varied from their response times in the switch condition. We found that average response time varied by condition. In the control condition, participants responded more quickly (M = 747.59, SD = 580.69). In the switch condition, participants had faster response times (M = 1186.02, SD = 891.09).
+
+[insert code for descriptives table]
+
