@@ -1,5 +1,5 @@
 ---
-title: "Final Paper"
+title: "The Stability/Flexibility Tradeoff On Task-switching"
 author: "Sophia Angleton, Fiona Debernardi, Stephen Anti"
 date: "2024-12-11"
 output: pdf_document
