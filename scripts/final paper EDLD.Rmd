@@ -3,6 +3,11 @@ title: "The Stability/Flexibility Tradeoff On Task-switching"
 author: "Sophia Angleton, Fiona Debernardi, Stephen Anti"
 date: "2024-12-11"
 output: pdf_document
+execute:
+  eval: true
+  echo: false
+bibliography: references.bib
+#csl: apa.csl # Specific citation style (APA)
 ---
 ```{r}
 #| include: FALSE
@@ -22,12 +27,30 @@ This study is interested in understanding the relationship between task-switchin
 
 ## Introduction
 
-The paradigm between cognitive stability and cognitive stability is a widely known and established relationship in the world of cognitive science. Both cognitive stability and flexibility are aspects of executive functioning, or what we understand as self-control (Merian, 2010). Cognitive flexibility centers itself in a domain of executive functioning called mental set shifting, and in previous literature, has been understood through the use of the task-switching paradigm. Tasks such as odds-evens, the Stroop task, or other alternating tasks where through the use of cues, participants need to identify an alternating attribute of a stimuli (Merian, 2010). For this study, the task-switch paradigm is constructed through the identification of one of two attributes, color or shape, where they identify color of the stimulus or shape of the stimulus, respectively. According to the established stability/flexibility tradeoff, when one is performing a task that requires more cognitive stability, it is harder to also be more cognitively flexible. This is seen in the task-switch paradigm within-subjects where they have less switch-costs when not switching task cues compared to higher switch-costs when switching from one cue to another (Goschke, 2000). 
+The paradigm between cognitive stability and cognitive stability is a widely known and established relationship in the world of cognitive science. Both cognitive stability and flexibility are aspects of executive functioning, or what we understand as self-control [@monsell_control_2000]. Cognitive flexibility centers itself in a domain of executive functioning called mental set shifting, and in previous literature, has been understood through the use of the task-switching paradigm. Tasks such as odds-evens, the Stroop task, or other alternating tasks where through the use of cues, participants need to identify an alternating attribute of a stimuli [@mayr_long-term_2014]. For this study, the task-switch paradigm is constructed through the identification of one of two attributes, color or shape, where they identify color of the stimulus or shape of the stimulus, respectively. According to the established stability/flexibility tradeoff, when one is performing a task that requires more cognitive stability, it is harder to also be more cognitively flexible. This is seen in the task-switch paradigm within-subjects where they have less switch-costs when not switching task cues compared to higher switch-costs when switching from one cue to another [@mayr_does_2024].
 
-However, a recent reevaluation of the generalizability of the stability/flexibility tradeoff has posited that tradeoffs originally thought to explain a plethora of cognitive models, occur only in highly specified contexts (Mayr & Graetz). Instead, there is newfound evidence of an anti-tradeoff pattern, meaning there is co-occurrence of cognitive stability and flexibility depending on the level of resolution encoding (Mayr et al.). These recent findings in the field of decision-making suggest that the stability-flexibility trade off may not be as strong as once thought, however in this study we are still predicting we will see a negative relationship between the switch (flexibility) and no-switch (stability) variables through a comparison of error rate and response time until further studies explain more about a potential anti-tradeoff occurring. Indeed, using the stability-flexibility tradeoff to inform our predictions, we predict that: 1) There is a negative relationship between expression of stability and expression of flexibility. We will see this relationship on three levels, within-subjects, in individual differences, and on the experimental level. We will calculate the difference in reaction times between no-switch and switch trials. A smaller reaction time difference is interpreted as a higher level of stability, whereas a longer reaction time indicates a higher level of flexibility (Goschke, 2000). 
+However, a recent reevaluation of the generalizability of the stability/flexibility tradeoff has posited that tradeoffs originally thought to explain a plethora of cognitive models, occur only in highly specified contexts [@mayr_does_2024]. Instead, there is newfound evidence of an anti-tradeoff pattern, meaning there is co-occurrence of cognitive stability and flexibility depending on the level of resolution encoding [@mayr_does_2024]. These recent findings in the field of decision-making suggest that the stability-flexibility trade off may not be as strong as once thought, however in this study we are still predicting we will see a negative relationship between the switch (flexibility) and no-switch (stability) variables through a comparison of error rate and response time until further studies explain more about a potential anti-tradeoff occurring. Indeed, using the stability-flexibility tradeoff to inform our predictions, we predict that: 1) There is a negative relationship between expression of stability and expression of flexibility. We will see this relationship on three levels, within-subjects, in individual differences, and on the experimental level. We will calculate the difference in reaction times between no-switch and switch trials. A smaller reaction time difference is interpreted as a higher level of stability, whereas a longer reaction time indicates a higher level of flexibility [@monsell_control_2000]. 
 
+## Methods
+### Data Cleaning
+Using RStudio, the first major step for analyzing the dataset involved a clean-up process. The first clean up involved re-naming columns for better understanding of the dataset. Variables dim1 was replaced with dimshape, dim2 replaced with dimcolor, time replaced with RT, cor with correct, and res with response.  Following from that, numeric values in the dataset were replaced with character strings for the variables Task and Error. Practice trials were then removed from the dataset since the ultimate for the final data is to isolate switch trials and control trials. 
+ 
+### Determine and remove outliers
+#### Outliers by Error:
+Since a key task of this study is to test for accuracy, it was necessary to operationalize accuracy by setting a criterion of 80% accuracy in all trials per participant. Out of the total of 896 trials, and using the 80% accuracy limit, at least 179 were needed to meet the accuracy threshold denoted by 0 in the error variable column. Grouping by id and summing by error and filtering out all those falling below the accuracy threshold, two people fellow below the accuracy threshold and were removed (id : 70 and id: 87). These two were the outliers by error.
 
-#Results
+### Outliers by inter-response
+A close inspection of the data and examining RT variable in descending order, showed that some participants only did 7 blocks of runs instead of 8. To account for this variance, the z-score  for each sequence position along with switch and ambiguity were run on the RT variable and Z-Score was also run on each block.
+
+To arrive at this, the first step was to separate switch trials, c(1,5) and control trials !c(1,5). This means, if task is 1 or 5, we assigned switch, else, it was assigned as control. First trial after each block had to be thrown out because it is not a switch or noswitch. Cycle positions were separated into cycle positions of 4, making a total of 16 conditions. 
+
+## Mean and Standard Error of Response Time
+Second step involved calculating mean response times (RT) by trial type and calculating the z-scores. 
+The  z-score for both control and switch was 0 (the expected value) and that our Z-Standard Deviation (Zsd) is 1 (which is also the expected value ). Looking at the mean for RT in both switch and control shows that the response time means tend to be a lot longer on average than the average response time for control trials (non-switch trials). The difference in means was by 310.8437 where the switch trial takes 310.84 ms longer than the control or non-switch trials.
+
+Outliers were identified for z-scores ( scores beyond -3 and 3), means and standard error of response time for each trail type was also calculated. 
+
+## Results
 
 First, we created a density plot to examine how response times (RT) were distributed in the data set (See Figure 1). We wanted to first examine how participants were responding across all conditions, so we averaged paricipants response times and then put them into this density plot. The average response times (as indicated by the red dashed line) was 860.44 ms, and the standard deviation was 697.28 ms.
 
@@ -42,4 +65,8 @@ We also wanted to use boxplots to examine the differences in responses between t
 Next, we wanted to see how the participants' response times in the control condition varied from their response times in the switch condition. We found that average response time varied by condition. In the control condition, participants responded more quickly (M = 747.59, SD = 580.69). In the switch condition, participants had faster response times (M = 1186.02, SD = 891.09).
 
 [insert code for descriptives table]
+
+
+\newpage
+## References
 
