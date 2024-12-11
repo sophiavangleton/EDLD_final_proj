@@ -18,7 +18,6 @@ library(rio)
 library(psych) #generate metrix w scatterplot and cor
 #import dataset
 AlternateRuns <- read_csv("AlternateRuns.csv")
-
 ```
 
 ## Abstract
@@ -52,9 +51,74 @@ Outliers were identified for z-scores ( scores beyond -3 and 3), means and stand
 
 ## Results
 
-First, we created a density plot to examine how response times (RT) were distributed in the data set (See Figure 1). We wanted to first examine how participants were responding across all conditions, so we averaged paricipants response times and then put them into this density plot. The average response times (as indicated by the red dashed line) was 860.44 ms, and the standard deviation was 697.28 ms.
+First, we created a density plot to examine how response times (RT) were distributed in the data set (See Figure 1). We wanted to first examine how participants were responding across all conditions, so we averaged participants response times and then put them into this density plot. The average response times (as indicated by the red dashed line) was 860.44 ms, and the standard deviation was 697.28 ms.
+
+```{r}
+alt_run
+```
+
+```{r}
+mean_rt <- mean(alt_run$RT, na.rm = TRUE)
+mean_rt
+sd_rt <-  sd(alt_run$RT, na.rm = TRUE)
+
+
+alt_run %>% 
+  ggplot(aes(x=RT)) +
+  geom_histogram(aes(y = after_stat(density)), fill = 'darkgreen', color = 'darkblue') +
+  geom_vline(aes(xintercept = mean_rt) , color = 'red', linetype = 'dashed', size = 1.5) +
+    theme_minimal() +
+  stat_function(fun = dnorm, args = list(mean = mean_rt, sd = sd_rt) ,  col = 'gold', size = 1.5) +
+    labs(x= 'Response Times (ms)', y= 'Density', title = 'Density plot of Response Times', subtitle = 'The mean and normal density curve of RTs', caption="Figure 1") 
+
+```
+
 
 [insert code for density plot]
+
+```{r}
+
+alt_run %>% 
+  arrange(desc(RT))
+
+alt_run <- alt_run %>% 
+  mutate(trial_type = if_else(cycle %in% c(1,5), 'Switch', 'No-Switch')) 
+alt_run
+
+
+z_scoretrial <- alt_run %>% 
+  group_by(trial_type) %>% 
+  mutate(z= (RT- mean(RT))/sd(RT)) %>% 
+  summarize(z_score_mean = mean(z, na.rm = TRUE),z_score_sd = sd(z, na.rm = TRUE), response_time_mean = mean(RT, na.rm = TRUE),response_time_mean = sd(RT, na.rm= TRUE))
+
+z_scoretrial
+
+rtdif <- z_scoretrial %>% 
+  summarize(meandif = 889.9560 - 579.1123) 
+rtdif 
+
+outliers_IRT <- alt_run %>%
+  group_by(trial_type) %>% 
+  mutate(z_score = (RT- mean(RT))/sd(RT)) %>% 
+  filter(abs(z_score) > 3)
+outliers_IRT
+
+
+summary_data <- alt_run %>% 
+  group_by(trial_type) %>% 
+  summarise( mean_RT = mean(RT), se_RT = sd(RT) / sqrt(n()) ) %>% mutate(lower_CI = mean_RT - qt(0.975, df = n() - 1) * se_RT, upper_CI = mean_RT + qt(0.975, df = n() - 1) * se_RT)
+summary_data
+
+
+cycle_plot <- summary_data %>% 
+  ggplot(aes(trial_type, mean_RT)) +
+  geom_col(fill= '#9CAF88') +
+  geom_errorbar(aes(ymin = lower_CI, ymax = upper_CI), width = 0.2, color = 'brown') +
+  labs(title = 'Trial Type By Response Time', subtitle = 'Relationship between response times and Switch/No-Switch trials', x= "Trial Type", y= 'Response Time (ms)')+
+  theme_minimal() 
+cycle_plot
+  
+```
 
 Next, we created a boxplot to show the distribution of response times across all conditions. The plot shows the overall spread of response times for all tasks combined. 
 

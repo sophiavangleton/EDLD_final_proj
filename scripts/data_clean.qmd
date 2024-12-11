@@ -169,7 +169,6 @@ cycle_plot
   
 
 
-
 ```
 
 ## Descriptive Graphs
