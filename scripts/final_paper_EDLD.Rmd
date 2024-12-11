@@ -1,57 +1,57 @@
 ---
-title: "Final Paper"
+title: "The Stability/Flexibility Tradeoff On Task-switching"
 author: "Sophia Angleton, Fiona Debernardi, Stephen Anti"
 date: "2024-12-11"
 output:
-  html_document:
-    df_print: paged
+  pdf_document: 
+    latex_engine: xelatex
+    toc: true
+    keep_tex: true
+mainfont: Times New Roman
+fontsize: 11pt
+bibliography: references.bib
+#csl: apa.csl # Specific citation style (APA)
 ---
 ```{r}
 #| include: FALSE
 library(tidyverse)
 library(janitor)
-library(tidyr)
 library(readr)
 library(rio)
-library(knitr)
-library(kableExtra)
-library(dplyr)
-library(psych) #generate metrix w scatterplot and cor
-#import dataset
-AlternateRuns <- read_csv("AlternateRuns.csv")
+library(psych) 
+
+alt_run <- read_csv("AlternateRuns.csv")
+
+knitr::opts_chunk$set(warning = FALSE, message = FALSE) 
 ```
 
-## Abstract
-
-This study is interested in understanding the relationship between task-switching and the cognitive stability-flexibility tradeoff. The design of this study will involve task-switching in an alternating runs manner, where there are two cues this task switches between, shape and color and these alternate in cycles of 4, each run being cycles of 4. This study will use alternating runs task-switching to understand the relationship between cognitive stability and cognitive flexibility. We will use the stability-flexibility tradeoff to inform our predictions, where we predict that 1) There is a negative relationship between expression of stability and expression of flexibility. We will see this relationship on three levels, within-subjects, in individual differences, and on the experimental level. Through a basic analysis of data, we saw there was a difference between stability and flexibility through a difference in switch cost measured in response time. This shows that there is a presence of stability and flexibility informing our task-switching study, however further analysis is required to understand the directionality of the relationship. 
-
-## Introduction
-
-The paradigm between flexibility and cognitive stability is a widely known and established relationship in the world of cognitive science. Both cognitive stability and flexibility are aspects of executive functioning, or what we understand as self-control (Merian, 2010). Cognitive flexibility centers itself in a domain of executive functioning called mental set shifting, and in previous literature, has been understood through the use of the task-switching paradigm. Tasks such as odds-evens, the Stroop task, or other alternating tasks where through the use of cues, participants need to identify an alternating attribute of a stimuli (Merian, 2010). For this study, the task-switch paradigm is constructed through the identification of one of two attributes, color or shape, where they identify color of the stimulus or shape of the stimulus, respectively. According to the established stability/flexibility tradeoff, when one is performing a task that requires more cognitive stability, it is harder to also be more cognitively flexible. This is seen in the task-switch paradigm within-subjects where they have less switch-costs when not switching task cues compared to higher switch-costs when switching from one cue to another (Goschke, 2000). 
-
-However, a recent reevaluation of the generalizability of the stability/flexibility tradeoff has posited that tradeoffs originally thought to explain a plethora of cognitive models, occur only in highly specified contexts (Mayr & Graetz). Instead, there is newfound evidence of an anti-tradeoff pattern, meaning there is co-occurrence of cognitive stability and flexibility depending on the level of resolution encoding (Mayr et al.). These recent findings in the field of decision-making suggest that the stability-flexibility trade off may not be as strong as once thought, however in this study we are still predicting we will see a negative relationship between the switch (flexibility) and no-switch (stability) variables through a comparison of error rate and response time until further studies explain more about a potential anti-tradeoff occurring. Indeed, using the stability-flexibility tradeoff to inform our predictions, we predict that: 1) There is a negative relationship between expression of stability and expression of flexibility. We will see this relationship on three levels, within-subjects, in individual differences, and on the experimental level. We will calculate the difference in reaction times between no-switch and switch trials. A smaller reaction time difference is interpreted as a higher level of stability, whereas a longer reaction time indicates a higher level of flexibility (Goschke, 2000). 
-
-## Methods
-
 ```{r}
-#rename columns to understand better
-alt_run <- AlternateRuns %>% 
+#| include: false 
+alt_run <- alt_run %>% 
   rename(dimshape = dim1, dimcolor = dim2, RT = time, correct = cor, response = res)
-alt_run
-```
-```{r}
-#lets look at the top RTs. 
-alt_run %>% 
-  arrange(desc(RT))
 
-#WHAT TO DO: z-score on each seq position x switch x ambiguity on RT then z-score on each block (to account for some participants only doing 7 instead of 8 blocks) 
+alt_run <- alt_run %>% 
+  filter(block != 0) 
 
-#STEP 1: separate switch trials, c(1,5) and control trials !c(1,5)
+crit <- 896 - (896 * .8)
+crit # need at least 179 out of 896 trials to be correct, denoted by 0 in error col
+sum_er <- alt_run %>% 
+  group_by(id) %>% 
+summarize(sum = sum(error))
 
+sum_er <- sum_er %>% 
+  mutate(outlier_er =  (sum > crit))
+  
+sum_er <- sum_er %>% 
+  filter(outlier_er == !FALSE)  #two people fall below 80% accuracy
+
+#removing those outliers here 
+
+alt_run <- alt_run %>% 
+  filter(id != 70, id != 87)
 
 alt_run <- alt_run %>% 
   mutate(trial_type = if_else(cycle %in% c(1,5), 'Switch', 'No-Switch')) #saying if its 1 or 5 assign switch, else, assign control. so cool. need to also throw out the first trial after each block bc its not a switch or noswitch. need to separate into cycle positions of 4, so total conditions are 16 
-alt_run
 
 #STEP 2: Look at mean RTs by Trial_type, look at z-scores
 
@@ -60,15 +60,13 @@ z_scoretrial <- alt_run %>%
   mutate(z= (RT- mean(RT))/sd(RT)) %>% 
   summarize(z_score_mean = mean(z, na.rm = TRUE),z_score_sd = sd(z, na.rm = TRUE), response_time_mean = mean(RT, na.rm = TRUE),response_time_mean = sd(RT, na.rm= TRUE))
 
-z_scoretrial
+rtdif <- z_scoretrial %>% 
+  summarize(meandif = 889.9560 - 579.1123)
 
 #STEP 2.1: Interpret the data
 
 #so this is telling us that our mean z-score for both control and switch is basically 0 (which is what we want to see) and that our z sd is 1 (which is also what we want to see). looking at the mean for RT in both switch and control, we see that the response time means tend to be a lot longer on average than the average response time for control trials (non-switch trials). this is so cool!
 
-rtdif <- z_scoretrial %>% 
-  summarize(meandif = 889.9560 - 579.1123) 
-rtdif #difference in means by 310.8437 where the switch trial takes 310.84 ms longer than the control or non-switch trials. 
 
 # Identify outliers (z-scores beyond -3 and 3)
 
@@ -76,25 +74,54 @@ outliers_IRT <- alt_run %>%
   group_by(trial_type) %>% 
   mutate(z_score = (RT- mean(RT))/sd(RT)) %>% 
   filter(abs(z_score) > 3)
-outliers_IRT
+
 
 # Calculate the mean and standard error of RT for each trial_type
 summary_data <- alt_run %>% 
   group_by(trial_type) %>% 
   summarise( mean_RT = mean(RT), se_RT = sd(RT) / sqrt(n()) ) %>% mutate(lower_CI = mean_RT - qt(0.975, df = n() - 1) * se_RT, upper_CI = mean_RT + qt(0.975, df = n() - 1) * se_RT)
-summary_data
+
+mean_rt <- mean(alt_run$RT, na.rm = TRUE)
+
+sd_rt <-  sd(alt_run$RT, na.rm = TRUE)
 
 ```
+## Abstract
+
+This study is interested in understanding the relationship between task-switching and the cognitive stability-flexibility tradeoff. The design of this study will involve task-switching in an alternating runs manner, where there are two cues this task switches between, shape and color and these alternate in cycles of 4, each run being cycles of 4. This study will use alternating runs task-switching to understand the relationship between cognitive stability and cognitive flexibility. We will use the stability-flexibility tradeoff to inform our predictions, where we predict that 1) There is a negative relationship between expression of stability and expression of flexibility. We will see this relationship on three levels, within-subjects, in individual differences, and on the experimental level. Through a basic analysis of data, we saw there was a difference between stability and flexibility through a difference in switch cost measured in response time. This shows that there is a presence of stability and flexibility informing our task-switching study, however further analysis is required to understand the directionality of the relationship. 
+
+## Introduction
+
+The paradigm between cognitive stability and cognitive flexibility is a widely known and established relationship in the world of cognitive science. Both cognitive stability and flexibility are aspects of executive functioning, or what we understand as self-control [@monsell_control_2000]. Cognitive flexibility centers itself in a domain of executive functioning called mental set shifting, and in previous literature, has been understood through the use of the task-switching paradigm. Tasks such as odds-evens, the Stroop task, or other alternating tasks where through the use of cues, participants need to identify an alternating attribute of a stimuli [@mayr_long-term_2014]. For this study, the task-switch paradigm is constructed through the identification of one of two attributes, color or shape, where they identify color of the stimulus or shape of the stimulus, respectively. According to the established stability/flexibility tradeoff, when one is performing a task that requires more cognitive stability, it is harder to also be more cognitively flexible. This is seen in the task-switch paradigm within-subjects where they have less switch-costs when not switching task cues compared to higher switch-costs when switching from one cue to another [@mayr_does_2024].
+
+However, a recent reevaluation of the generalizability of the stability/flexibility tradeoff has posited that tradeoffs originally thought to explain a plethora of cognitive models, occur only in highly specified contexts [@mayr_does_2024]. Instead, there is newfound evidence of an anti-tradeoff pattern, meaning there is co-occurrence of cognitive stability and flexibility depending on the level of resolution encoding [@mayr_does_2024]. These recent findings in the field of decision-making suggest that the stability-flexibility trade off may not be as strong as once thought, however in this study we are still predicting we will see a negative relationship between the switch (flexibility) and no-switch (stability) variables through a comparison of error rate and response time until further studies explain more about a potential anti-tradeoff occurring. Indeed, using the stability-flexibility tradeoff to inform our predictions, we predict that: 1) There is a negative relationship between expression of stability and expression of flexibility. We will see this relationship on three levels, within-subjects, in individual differences, and on the experimental level. We will calculate the difference in reaction times between no-switch and switch trials. A smaller reaction time difference is interpreted as a higher level of stability, whereas a longer reaction time indicates a higher level of flexibility [@monsell_control_2000]. 
+
+## Methods
+### Data Cleaning
+Using RStudio, the first major step for analyzing the dataset involved a clean-up process. The first clean up involved re-naming columns for better understanding of the dataset. Variables dim1 was replaced with dimshape, dim2 replaced with dimcolor, time replaced with RT, cor with correct, and res with response.  Following from that, numeric values in the dataset were replaced with character strings for the variables Task and Error. Practice trials were then removed from the dataset since the ultimate for the final data is to isolate switch trials and control trials. 
+ 
+### Determine and Remove Outliers
+#### Outliers by Error:
+Since a key task of this study is to test for accuracy, it was necessary to operationalize accuracy by setting a criterion of 80% accuracy in all trials per participant. Out of the total of 896 trials, and using the 80% accuracy limit, at least 179 were needed to meet the accuracy threshold denoted by 0 in the error variable column. Grouping by id and summing by error and filtering out all those falling below the accuracy threshold, two people fellow below the accuracy threshold and were removed (id : 70 and id: 87). These two were the outliers by error.
+
+### Outliers by Inter-response
+A close inspection of the data and examining RT variable in descending order, showed that some participants only did 7 blocks of runs instead of 8. To account for this variance, the z-score  for each sequence position along with switch and ambiguity were run on the RT variable and Z-Score was also run on each block.
+
+To arrive at this, the first step was to separate switch trials, c(1,5) and control trials !c(1,5). This means, if task is 1 or 5, we assigned switch, else, it was assigned as control. First trial after each block had to be thrown out because it is not a switch or no-switch. Cycle positions were separated into cycle positions of 4, making a total of 16 conditions. 
+
+## Mean and Standard Error of Response Time
+Second step involved calculating mean response times (RT) by trial type and calculating the z-scores. 
+The  z-score for both control and switch was 0 (the expected value) and that our Z-Standard Deviation (Zsd) is 1 (which is also the expected value ). Looking at the mean for RT in both switch and control shows that the response time means tend to be a lot longer on average than the average response time for control trials (non-switch trials). The difference in means was by `r round(rtdif)` where the switch trial takes `r round(rtdif)` ms longer than the control or non-switch trials.
+
+Outliers were identified for z-scores (scores beyond -3 and 3), means and standard error of response time for each trail type was also calculated. 
 
 ## Results
 
-First, we created a density plot to examine how response times (RT) were distributed in the data set (See Figure 1). We wanted to first examine how participants were responding across all conditions, so we averaged participants response times and then put them into this density plot. The average response time (as indicated by the red dashed line) was 860.44 ms and the standard deviation was 697.28 ms.
+First, we created a density plot to examine how response times (RT) were distributed in the data set (See Figure 1). We wanted to first examine how participants were responding across all conditions, so we averaged participants response times and then put them into this density plot. The average response time (as indicated by the red dashed line) was `r round(mean_rt)` ms and the standard deviation was `r round(sd_rt)` ms.
 
 
 ```{r echo=FALSE}
-mean_rt <- mean(alt_run$RT, na.rm = TRUE)
-mean_rt
-sd_rt <-  sd(alt_run$RT, na.rm = TRUE)
+#| echo: false
 
 alt_run %>% 
   ggplot(aes(x=RT)) +
@@ -104,10 +131,8 @@ alt_run %>%
   stat_function(fun = dnorm, args = list(mean = mean_rt, sd = sd_rt), col = 'gold', size = 1.5) +
   labs(x = 'Response Times (ms)', y = 'Density', title = 'Density plot of Response Times', subtitle = 'The mean and normal density curve of RTs')
 ```
-
-Next, we examined whether the participants' response times in the control condition varied from their response times in the switch condition. We found that average response time varied by condition. In the control condition, participants responded more quickly (M = 747.59, SD = 580.69). In the switch condition, participants had slower response times (M = 1186.02, SD = 891.09). We pivoted the data to create separate columns for each condition, and then we calculated the mean and standard deviation of each column. We then created a table to depict these descriptives.
-
 ```{r}
+#| include: false 
 alt_run_wide <- alt_run %>%
   pivot_wider(
     names_from = trial_type,          # Use trial_type as column names
@@ -128,13 +153,19 @@ sd_rt_control <- sd(alt_run_wide$`response_time_No-Switch`, na.rm = TRUE)
 mean_rt_switch <- mean(alt_run_wide$`response_time_Switch`, na.rm = TRUE)
 median_rt_switch <- median(alt_run_wide$`response_time_Switch`, na.rm = TRUE)
 sd_rt_switch <- sd(alt_run_wide$`response_time_Switch`, na.rm = TRUE)
+```
 
+Next, we examined whether the participants' response times in the control condition varied from their response times in the switch condition. We found that average response time varied by condition. In the control condition, participants responded more quickly (M = `r round(mean_rt_control)`, SD = `r round(sd_rt_control)`). In the switch condition, participants had slower response times (M = `r round(mean_rt_switch)`, SD = `r round(sd_rt_switch)`). We pivoted the data to create separate columns for each condition, and then we calculated the mean and standard deviation of each column. We then created a table to depict these descriptives.
+
+```{r}
+#| echo: false
+
+# Descriptive table for two columns: response_time_control and response_time_switch
 summary_table <- data.frame(
-  Statistic = c("Mean RT", "Median RT", "Standard Deviation"),
-  `No-Switch (Control)` = c(mean_rt_control, median_rt_control, sd_rt_control),
-  `Switch` = c(mean_rt_switch, median_rt_switch, sd_rt_switch)
+  Statistic = c("Mean", "Median", "Standard Deviation"),
+  Response_time_control = c(mean_rt_control, median_rt_control, sd_rt_control),
+  Response_time_switch = c(mean_rt_switch, median_rt_switch, sd_rt_switch)
 )
-
 # Round the numeric columns
 summary_table <- summary_table %>%
   mutate(across(where(is.numeric), ~ round(.x, 2))) 
@@ -148,52 +179,7 @@ kable(summary_table, caption = "Descriptive Statistics for Response Times")
 Finally, we created a bar chart to show the difference in response times by condition. This chart is another way of visualizing the results that we found above. The chart shows that when participants were told by the instructions to switch from one task to another (switch trial), they took longer than when they were doing the same task repeatedly (control trial).
 
 ```{r}
-#lets look at the top RTs. 
-alt_run %>% 
-  arrange(desc(RT))
-
-#WHAT TO DO: z-score on each seq position x switch x ambiguity on RT then z-score on each block (to account for some participants only doing 7 instead of 8 blocks) 
-
-#STEP 1: separate switch trials, c(1,5) and control trials !c(1,5)
-
-
-alt_run <- alt_run %>% 
-  mutate(trial_type = if_else(cycle %in% c(1,5), 'Switch', 'No-Switch')) #saying if its 1 or 5 assign switch, else, assign control. so cool. need to also throw out the first trial after each block bc its not a switch or noswitch. need to separate into cycle positions of 4, so total conditions are 16 
-alt_run
-
-#STEP 2: Look at mean RTs by Trial_type, look at z-scores
-
-z_scoretrial <- alt_run %>% 
-  group_by(trial_type) %>% 
-  mutate(z= (RT- mean(RT))/sd(RT)) %>% 
-  summarize(z_score_mean = mean(z, na.rm = TRUE),z_score_sd = sd(z, na.rm = TRUE), response_time_mean = mean(RT, na.rm = TRUE),response_time_mean = sd(RT, na.rm= TRUE))
-
-z_scoretrial
-
-#STEP 2.1: Interpret the data
-
-#so this is telling us that our mean z-score for both control and switch is basically 0 (which is what we want to see) and that our z sd is 1 (which is also what we want to see). looking at the mean for RT in both switch and control, we see that the response time means tend to be a lot longer on average than the average response time for control trials (non-switch trials). this is so cool!
-
-rtdif <- z_scoretrial %>% 
-  summarize(meandif = 889.9560 - 579.1123) 
-rtdif #difference in means by 310.8437 where the switch trial takes 310.84 ms longer than the control or non-switch trials. 
-
-# Identify outliers (z-scores beyond -3 and 3)
-
-outliers_IRT <- alt_run %>%
-  group_by(trial_type) %>% 
-  mutate(z_score = (RT- mean(RT))/sd(RT)) %>% 
-  filter(abs(z_score) > 3)
-outliers_IRT
-
-# Calculate the mean and standard error of RT for each trial_type
-summary_data <- alt_run %>% 
-  group_by(trial_type) %>% 
-  summarise( mean_RT = mean(RT), se_RT = sd(RT) / sqrt(n()) ) %>% mutate(lower_CI = mean_RT - qt(0.975, df = n() - 1) * se_RT, upper_CI = mean_RT + qt(0.975, df = n() - 1) * se_RT)
-summary_data
-
-#segregate based on cycle position and add 95% CI
-
+#| echo: false
 cycle_plot <- summary_data %>% 
   ggplot(aes(trial_type, mean_RT)) +
   geom_col(fill= '#9CAF88') +
@@ -210,5 +196,4 @@ The main goal of this study was to investigate task-switching and the trade off 
 
 
 \newpage
-
 ## References
