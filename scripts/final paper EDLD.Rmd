@@ -3,11 +3,12 @@ title: "The Stability/Flexibility Tradeoff On Task-switching"
 author: "Sophia Angleton, Fiona Debernardi, Stephen Anti"
 date: "2024-12-11"
 output:
-  html_document:
+  pdf_document: 
+    latex_engine: xelatex
     toc: true
-execute:
-  eval: true
-  echo: false
+    keep_tex: true
+mainfont: Times New Roman
+fontsize: 11pt
 bibliography: references.bib
 #csl: apa.csl # Specific citation style (APA)
 ---
@@ -17,10 +18,11 @@ library(tidyverse)
 library(janitor)
 library(readr)
 library(rio)
-library(psych) #generate metrix w scatterplot and cor
-#import dataset
+library(psych) 
 
 alt_run <- read_csv("AlternateRuns.csv")
+
+knitr::opts_chunk$set(warning = FALSE, message = FALSE) 
 ```
 
 ## Abstract
@@ -29,7 +31,7 @@ This study is interested in understanding the relationship between task-switchin
 
 ## Introduction
 
-The paradigm between cognitive stability and cognitive stability is a widely known and established relationship in the world of cognitive science. Both cognitive stability and flexibility are aspects of executive functioning, or what we understand as self-control [@monsell_control_2000]. Cognitive flexibility centers itself in a domain of executive functioning called mental set shifting, and in previous literature, has been understood through the use of the task-switching paradigm. Tasks such as odds-evens, the Stroop task, or other alternating tasks where through the use of cues, participants need to identify an alternating attribute of a stimuli [@mayr_long-term_2014]. For this study, the task-switch paradigm is constructed through the identification of one of two attributes, color or shape, where they identify color of the stimulus or shape of the stimulus, respectively. According to the established stability/flexibility tradeoff, when one is performing a task that requires more cognitive stability, it is harder to also be more cognitively flexible. This is seen in the task-switch paradigm within-subjects where they have less switch-costs when not switching task cues compared to higher switch-costs when switching from one cue to another [@mayr_does_2024].
+The paradigm between cognitive stability and cognitive flexibility is a widely known and established relationship in the world of cognitive science. Both cognitive stability and flexibility are aspects of executive functioning, or what we understand as self-control [@monsell_control_2000]. Cognitive flexibility centers itself in a domain of executive functioning called mental set shifting, and in previous literature, has been understood through the use of the task-switching paradigm. Tasks such as odds-evens, the Stroop task, or other alternating tasks where through the use of cues, participants need to identify an alternating attribute of a stimuli [@mayr_long-term_2014]. For this study, the task-switch paradigm is constructed through the identification of one of two attributes, color or shape, where they identify color of the stimulus or shape of the stimulus, respectively. According to the established stability/flexibility tradeoff, when one is performing a task that requires more cognitive stability, it is harder to also be more cognitively flexible. This is seen in the task-switch paradigm within-subjects where they have less switch-costs when not switching task cues compared to higher switch-costs when switching from one cue to another [@mayr_does_2024].
 
 However, a recent reevaluation of the generalizability of the stability/flexibility tradeoff has posited that tradeoffs originally thought to explain a plethora of cognitive models, occur only in highly specified contexts [@mayr_does_2024]. Instead, there is newfound evidence of an anti-tradeoff pattern, meaning there is co-occurrence of cognitive stability and flexibility depending on the level of resolution encoding [@mayr_does_2024]. These recent findings in the field of decision-making suggest that the stability-flexibility trade off may not be as strong as once thought, however in this study we are still predicting we will see a negative relationship between the switch (flexibility) and no-switch (stability) variables through a comparison of error rate and response time until further studies explain more about a potential anti-tradeoff occurring. Indeed, using the stability-flexibility tradeoff to inform our predictions, we predict that: 1) There is a negative relationship between expression of stability and expression of flexibility. We will see this relationship on three levels, within-subjects, in individual differences, and on the experimental level. We will calculate the difference in reaction times between no-switch and switch trials. A smaller reaction time difference is interpreted as a higher level of stability, whereas a longer reaction time indicates a higher level of flexibility [@monsell_control_2000]. 
 
@@ -115,7 +117,6 @@ summary_data <- alt_run %>%
 
 ```{r}
 #| echo: FALSE
-#| warning: false
 
 mean_rt <- mean(alt_run$RT, na.rm = TRUE)
 sd_rt <-  sd(alt_run$RT, na.rm = TRUE)
@@ -135,7 +136,7 @@ alt_run %>%
 
 ```{r}
 #| echo: FALSE
-#| warning: false
+
 cycle_plot <- summary_data %>% 
   ggplot(aes(trial_type, mean_RT)) +
   geom_col(fill= '#9CAF88') +
