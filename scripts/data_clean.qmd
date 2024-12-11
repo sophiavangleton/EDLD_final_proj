@@ -123,7 +123,7 @@ alt_run %>%
 
 
 alt_run <- alt_run %>% 
-  mutate(trial_type = if_else(cycle %in% c(1,5), 'switch', 'control')) #saying if its 1 or 5 assign switch, else, assign control. so cool. need to also throw out the first trial after each block bc its not a switch or noswitch. need to separate into cycle positions of 4, so total conditions are 16 
+  mutate(trial_type = if_else(cycle %in% c(1,5), 'Switch', 'No-Switch')) #saying if its 1 or 5 assign switch, else, assign control. so cool. need to also throw out the first trial after each block bc its not a switch or noswitch. need to separate into cycle positions of 4, so total conditions are 16 
 alt_run
 
 #STEP 2: Look at mean RTs by Trial_type, look at z-scores
@@ -163,7 +163,7 @@ cycle_plot <- summary_data %>%
   ggplot(aes(trial_type, mean_RT)) +
   geom_col(fill= '#9CAF88') +
   geom_errorbar(aes(ymin = lower_CI, ymax = upper_CI), width = 0.2, color = 'brown') +
-  labs(title = 'Trial Type By Response Time', subtitle = 'Relationship between response times and switch/no-switch trials', x= "Trial Type", y= 'Response Time (ms)')+
+  labs(title = 'Trial Type By Response Time', subtitle = 'Relationship between response times and Switch/No-Switch trials', x= "Trial Type", y= 'Response Time (ms)')+
   theme_minimal() 
 cycle_plot
   
@@ -190,7 +190,6 @@ alt_run %>%
   stat_function(fun = dnorm, args = list(mean = mean_rt, sd = sd_rt) ,  col = 'gold', size = 1.5) +
     labs(x= 'Response Times (ms)', y= 'Density', title = 'Density plot of Response Times', subtitle = 'The mean and normal density curve of RTs') 
 
-plotly::ggplotly()
 ```
 
 ### 2. Boxplot of RT

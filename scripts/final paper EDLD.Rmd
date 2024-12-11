@@ -1,9 +1,20 @@
 ---
-title: "Final Paper"
+title: "The Stability/Flexibility Tradeoff On Task-switching"
 author: "Sophia Angleton, Fiona Debernardi, Stephen Anti"
 date: "2024-12-11"
 output: pdf_document
 ---
+```{r}
+#| include: FALSE
+library(tidyverse)
+library(janitor)
+library(readr)
+library(rio)
+library(psych) #generate metrix w scatterplot and cor
+#import dataset
+AlternateRuns <- read_csv("AlternateRuns.csv")
+
+```
 
 ## Abstract
 
@@ -17,6 +28,7 @@ However, a recent reevaluation of the generalizability of the stability/flexibil
 
 
 #Results
+
 First, we created a density plot to examine how response times (RT) were distributed in the data set (See Figure 1). We wanted to first examine how participants were responding across all conditions, so we averaged paricipants response times and then put them into this density plot. The average response times (as indicated by the red dashed line) was 860.44 ms, and the standard deviation was 697.28 ms.
 
 [insert code for density plot]
